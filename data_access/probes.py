@@ -12,7 +12,10 @@ from astropy.wcs import WCS
 from sklearn.cluster import KMeans
 
 class ExclusionZones():
-
+    '''
+    A class to generate randoms for a data set, and sanitize them so
+    no randoms are generated inside masked regions
+    '''
     def __init__(self, field, subfield, basePath='/global/homes/i/ihasan/shear_gp/data_access/'):
         self.basePath = basePath
         self.field = field
