@@ -135,6 +135,7 @@ def dumpRandoms(table, debug=False):
         #update the rand_ra and rand_dec after they've been cleaned up
         tableViews[f]['rand_ra'] = rand_ra
         tableViews[f]['rand_dec'] = rand_dec
+        print('finished %s' % f+sf)
 
     for f in fields:
         randCorrCat = treecorr.Catalog(ra=tableViews[f]['rand_ra'], dec=tableViews[f]['rand_dec'],
