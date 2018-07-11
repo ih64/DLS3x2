@@ -1,11 +1,8 @@
-import treecorr
+import treecorr, itertools, pickle, os, regions
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import numpy as np
 from astropy.io import ascii
-import pickle
-import os
-import regions
 from astropy.coordinates import SkyCoord, Angle
 from astropy.io import fits
 from astropy.wcs import WCS
@@ -24,7 +21,6 @@ class ExclusionZones():
         self.edgeRegPath = os.path.join(self.basePath, 'regfiles',self.field+self.subfield+'.edge.reg')
         self.centRegPath = os.path.join(self.basePath, 'regfiles',self.field+self.subfield+'Center.reg')
         self.imagePath = os.path.join(self.basePath, 'WCS',self.field + self.subfield + 'wcs.fits')
-        
         self.wcs = self._getWCS(self.imagePath)
         self.regionList = []
         try:
@@ -106,6 +102,46 @@ class ExclusionZones():
         #were cutting out any points that land in gutters here
         return containsMask
 
+def byFields(table, field):
+    '''
+    helper function to return a subtable of a particular field only
+    '''
+    subfield_vals = table['subfield']
+    field_vals = np.array([i[:2] for i in subfield_vals ] )
+    mask = field_vals == field
+    return table[mask]
+
+def dumpRandoms(table, debug=False):
+    fields = ('F1','F2','F3','F4','F5')
+    subfields = ('p11','p12','p13','p21','p22','p23','p31','p32','p33')
+
+    #we need to index the catalog field by field, and generate randoms
+    #field by field ultimately concatenating them to make a master randoms cat
+
+    #temporary way of dealing with fields
+    #key is the field of interest, val is subtable of that field
+    tableViews = {}
+    for f in fields:
+        tableViews[f]= {}
+        tableViews[f]['galaxies'] =  byFields(table, f)
+        rand_ra, rand_dec = genRandoms(tableViews[f]['alpha']*(np.pi/180),
+            tableViews[f]['delta']*(np.pi/180))
+        tableViews[f]['rand_ra'] = rand_ra
+        tableViews[f]['rand_dec'] = rand_dec
+
+    for f, sf in itertools.product(fields, subfields):
+        ez = ExclusionZones(f, sf)
+        rand_ra, rand_dec = ez.flagPoints(rand_ra, rand_dec, unit='rad')
+        #update the rand_ra and rand_dec after they've been cleaned up
+        tableViews[f]['rand_ra'] = rand_ra
+        tableViews[f]['rand_dec'] = rand_dec
+
+    for f in fields:
+        randCorrCat = treecorr.Catalog(ra=tableViews[f]['rand_ra'], dec=tableViews[f]['rand_dec'],
+            ra_units='radians', dec_units='radians')
+        pickle.dump(randCorrCat, open(f+'randCorrCat.pkl','wb'))
+
+    return
 
 def calcProbes(table, field, table2=None, debug=False):
     '''
