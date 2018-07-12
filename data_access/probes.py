@@ -7,7 +7,7 @@ from astropy.coordinates import SkyCoord, Angle
 from astropy.io import fits
 from astropy.wcs import WCS
 from sklearn.cluster import KMeans
-
+from astropy.table import Table
 class ExclusionZones():
     '''
     A class to generate randoms for a data set, and sanitize them so
@@ -106,7 +106,7 @@ def byFields(table, field):
     '''
     helper function to return a subtable of a particular field only
     '''
-    subfield_vals = table['subfield']
+    subfield_vals = table['p.subfield']
     field_vals = np.array([i[:2] for i in subfield_vals ] )
     mask = field_vals == field
     return table[mask]
@@ -124,8 +124,8 @@ def dumpRandoms(table, debug=False):
     for f in fields:
         tableViews[f]= {}
         tableViews[f]['galaxies'] =  byFields(table, f)
-        rand_ra, rand_dec = genRandoms(tableViews[f]['alpha']*(np.pi/180),
-            tableViews[f]['delta']*(np.pi/180))
+        rand_ra, rand_dec = genRandoms(tableViews[f]['galaxies']['p.alpha']*(np.pi/180),
+                                       tableViews[f]['galaxies']['p.delta']*(np.pi/180))
         tableViews[f]['rand_ra'] = rand_ra
         tableViews[f]['rand_dec'] = rand_dec
 
@@ -138,6 +138,8 @@ def dumpRandoms(table, debug=False):
         print('finished %s' % f+sf)
 
     for f in fields:
+        t = Table([tableViews[f]['rand_ra'], tableViews[f]['rand_dec']], names=('ra','dec') )
+        t.write(f+'randoms.csv', format='csv')
         randCorrCat = treecorr.Catalog(ra=tableViews[f]['rand_ra'], dec=tableViews[f]['rand_dec'],
             ra_units='radians', dec_units='radians')
         pickle.dump(randCorrCat, open(f+'randCorrCat.pkl','wb'))
@@ -156,10 +158,10 @@ def calcProbes(table, field, table2=None, debug=False):
     
     
     #find kmeans centers
-    kIdxs = getKmeans(table['alpha'], table['delta'], n_clusters=9)
+    kIdxs = getKmeans(table['p.alpha'], table['p.delta'], n_clusters=9)
 
     #make a random catalog so we can compute the 2 point correlation
-    rand_ra, rand_dec = genRandoms(table['alpha']*(np.pi/180), table['delta']*(np.pi/180))
+    rand_ra, rand_dec = genRandoms(table['p.alpha']*(np.pi/180), table['p.delta']*(np.pi/180))
 
     #sanatize randoms subfield by subfield to remove any randoms that 
     #happen to fall in exclusion regions
@@ -177,11 +179,11 @@ def calcProbes(table, field, table2=None, debug=False):
     for k in ks:
         #make a subtable for data for the kth cluster alone
         clusterTable = table[kIdxs == k]
-        dataRaMax, dataRaMin = (clusterTable['alpha'].max(), clusterTable['alpha'].min())
-        dataDecMax, dataDecMin = (clusterTable['delta'].max(), clusterTable['delta'].min())
+        dataRaMax, dataRaMin = (clusterTable['p.alpha'].max(), clusterTable['p.alpha'].min())
+        dataDecMax, dataDecMin = (clusterTable['p.delta'].max(), clusterTable['p.delta'].min())
 
         #cut out a box of the data
-        dataInsideBox = (table['alpha'] > dataRaMin) & (table['alpha'] < dataRaMax) & (table['delta'] > dataDecMin) & (table['delta'] < dataDecMax)
+        dataInsideBox = (table['p.alpha'] > dataRaMin) & (table['p.alpha'] < dataRaMax) & (table['p.delta'] > dataDecMin) & (table['p.delta'] < dataDecMax)
         subTable = table[~dataInsideBox]
 
         #cut out a the same box from the randoms
@@ -193,7 +195,7 @@ def calcProbes(table, field, table2=None, debug=False):
 
         #deal with second catalog if need be
         if table2 is not None:
-            otherDataInsideBox = ((table2['alpha'] > dataRaMin) & (table2['alpha'] < dataRaMax) & (table2['delta'] > dataDecMin) & (table2['delta'] < dataDecMax))
+            otherDataInsideBox = ((table2['p.alpha'] > dataRaMin) & (table2['p.alpha'] < dataRaMax) & (table2['p.delta'] > dataDecMin) & (table2['p.delta'] < dataDecMax))
             otherSubTable = table2[~otherDataInsideBox]
             otherCat = astpyToCorr(otherSubTable)
             xi, sig, r, Coffset = getCrossWTheta(cat, otherCat, rand_ra[~randInsideBox], rand_dec[~randInsideBox])
@@ -255,7 +257,7 @@ def astpyToCorr(table):
     turn an astropy table into a treecorr catalog
     anticipating certain format form astropy catalog
     """
-    cat = treecorr.Catalog(ra=table['alpha'].data, dec=table['delta'].data,
+    cat = treecorr.Catalog(ra=table['p.alpha'].data, dec=table['p.delta'].data,
                          ra_units='deg', dec_units='deg', g1=table['e1'], g2=table['e2'])
     return cat
 
