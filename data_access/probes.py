@@ -143,11 +143,14 @@ def dumpRandoms(table, debug=False):
 
     return
 
-def calcProbes(table, field, table2=None, debug=False):
+def calcProbes(table, field, table2=None, debug=False, n_resample=100):
     '''
     given a astropy table with ra and dec columns, compute w of theta and make a plot
     '''
-    cat = astpyToCorr(table)
+    table_size = len(table)
+    xi_list = []
+    sig_list = []
+    r_list = []
 
     #read in the randoms and make a master table
     fields = ('F1','F2','F3','F4','F5')
@@ -155,16 +158,23 @@ def calcProbes(table, field, table2=None, debug=False):
     master_randoms = vstack(random_tables)
     #deal with second catalog if need be
     if table2 is not None:
+        cat = astpyToCorr(table)
         otherCat = astpyToCorr(table2)
         xi, sig, r, Coffset = getCrossWTheta(cat, otherCat, master_randoms['ra'],
             master_randoms['dec'])
     
     #otherwise just deal with the auto correlation
     else:
-    #calculate w of theta given our sanitized randoms and catalog data
-        xi, sig, r, Coffset = getWTheta(cat, master_randoms['ra'], master_randoms['dec'])
+        for i in range(0,n_resample):
+                resampled_idx = np.random.randint(0,table_size,table_size)
+                cat = astpyToCorr(table[resampled_idx])
+                #calculate w of theta given our sanitized randoms and catalog data
+                xi, sig, r, Coffset = getWTheta(cat, master_randoms['ra'], master_randoms['dec'])
+                xi_list.append(xi)
+                sig_list.append(sig)
+                r_list.append(r)
 
-    return {"xi":xi, "sig":sig, "r":r, "Coffset":Coffset}
+    return {"xi":xi_list, "sig":sig_list, "r":r_list, "Coffset":Coffset}
 
 def genRandoms(ra, dec, debug=True):
     ra_min = np.min(ra)
