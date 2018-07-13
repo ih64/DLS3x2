@@ -139,7 +139,7 @@ def dumpRandoms(table, debug=False):
 
     for f in fields:
         t = Table([tableViews[f]['rand_ra'], tableViews[f]['rand_dec']], names=('ra','dec') )
-        t.write(f+'randoms.csv', format='csv')
+        t.write(f+'randoms.csv', format='csv', overwrite=True)
 
     return
 
