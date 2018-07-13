@@ -143,7 +143,7 @@ def dumpRandoms(table, debug=False):
 
     return
 
-def calcProbes(table, field, table2=None, debug=False, n_resample=100):
+def calcProbes(table, table2=None, debug=False, n_resample=100):
     '''
     given a astropy table with ra and dec columns, compute w of theta and make a plot
     '''
