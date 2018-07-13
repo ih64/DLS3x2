@@ -131,7 +131,7 @@ def dumpRandoms(table, debug=False):
 
     for f, sf in itertools.product(fields, subfields):
         ez = ExclusionZones(f, sf)
-        rand_ra, rand_dec = ez.flagPoints(rand_ra, rand_dec, unit='rad')
+        rand_ra, rand_dec = ez.flagPoints(tableViews[f]['rand_ra'], tableViews[f]['rand_dec'], unit='rad')
         #update the rand_ra and rand_dec after they've been cleaned up
         tableViews[f]['rand_ra'] = rand_ra
         tableViews[f]['rand_dec'] = rand_dec
