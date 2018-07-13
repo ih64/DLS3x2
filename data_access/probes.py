@@ -7,7 +7,7 @@ from astropy.coordinates import SkyCoord, Angle
 from astropy.io import fits
 from astropy.wcs import WCS
 from sklearn.cluster import KMeans
-from astropy.table import Table
+from astropy.table import Table, vstack
 class ExclusionZones():
     '''
     A class to generate randoms for a data set, and sanitize them so
@@ -104,7 +104,7 @@ class ExclusionZones():
 
 def byFields(table, field):
     '''
-    helper function to return a subtable of a particular field only
+    helper function to return a table of a particular field only
     '''
     subfield_vals = table['p.subfield']
     field_vals = np.array([i[:2] for i in subfield_vals ] )
@@ -125,7 +125,7 @@ def dumpRandoms(table, debug=False):
         tableViews[f]= {}
         tableViews[f]['galaxies'] =  byFields(table, f)
         rand_ra, rand_dec = genRandoms(tableViews[f]['galaxies']['p.alpha']*(np.pi/180),
-                                       tableViews[f]['galaxies']['p.delta']*(np.pi/180))
+            tableViews[f]['galaxies']['p.delta']*(np.pi/180))
         tableViews[f]['rand_ra'] = rand_ra
         tableViews[f]['rand_dec'] = rand_dec
 
@@ -147,92 +147,25 @@ def calcProbes(table, field, table2=None, debug=False):
     '''
     given a astropy table with ra and dec columns, compute w of theta and make a plot
     '''
+    cat = astpyToCorr(table)
 
-    xi_list = []
-    sig_list = []
-    r_list = []
-    Coffset_list = []
+    #read in the randoms and make a master table
+    fields = ('F1','F2','F3','F4','F5')
+    random_tables =[ascii.read(f+'randoms.csv') for f in fields]
+    master_randoms = vstack(random_tables)
+    #deal with second catalog if need be
+    if table2 is not None:
+        otherCat = astpyToCorr(table2)
+        xi, sig, r, Coffset = getCrossWTheta(cat, otherCat, master_randoms['ra'],
+            master_randoms['dec'])
     
-    
-    #find kmeans centers
-    kIdxs = getKmeans(table['p.alpha'], table['p.delta'], n_clusters=9)
+    #otherwise just deal with the auto correlation
+    else:
+    #calculate w of theta given our sanitized randoms and catalog data
+        xi, sig, r, Coffset = getWTheta(cat, master_randoms['ra'], master_randoms['dec'])
 
-    #make a random catalog so we can compute the 2 point correlation
-    rand_ra, rand_dec = genRandoms(table['p.alpha']*(np.pi/180), table['p.delta']*(np.pi/180))
+    return {"xi":xi, "sig":sig, "r":r, "Coffset":Coffset}
 
-    #sanatize randoms subfield by subfield to remove any randoms that 
-    #happen to fall in exclusion regions
-    for subfield in ('p11','p12', 'p13', 'p21', 'p22', 'p23', 'p31', 'p32', 'p33'):
-
-        #sanatize randoms
-        ez = ExclusionZones(field,subfield)
-        #this will return randoms that are outside of exlusion regions
-        rand_ra, rand_dec = ez.flagPoints(rand_ra, rand_dec, unit='rad')
-        print('finished %s' % field+subfield)
-
-    #make some kmeans in the real catalog. this will be useful for jack knife resampling
-    ks = np.unique(kIdxs)
-
-    for k in ks:
-        #make a subtable for data for the kth cluster alone
-        clusterTable = table[kIdxs == k]
-        dataRaMax, dataRaMin = (clusterTable['p.alpha'].max(), clusterTable['p.alpha'].min())
-        dataDecMax, dataDecMin = (clusterTable['p.delta'].max(), clusterTable['p.delta'].min())
-
-        #cut out a box of the data
-        dataInsideBox = (table['p.alpha'] > dataRaMin) & (table['p.alpha'] < dataRaMax) & (table['p.delta'] > dataDecMin) & (table['p.delta'] < dataDecMax)
-        subTable = table[~dataInsideBox]
-
-        #cut out a the same box from the randoms
-        randInsideBox = (rand_ra > dataRaMin*(np.pi/180.)) & (rand_ra < dataRaMax*(np.pi/180.)) & (rand_dec > dataDecMin*(np.pi/180.)) & (rand_dec < dataDecMax*(np.pi/180.))
-
-        #do stuff for jackknifing
-        #create the treecorr data catalog
-        cat = astpyToCorr(subTable)
-
-        #deal with second catalog if need be
-        if table2 is not None:
-            otherDataInsideBox = ((table2['p.alpha'] > dataRaMin) & (table2['p.alpha'] < dataRaMax) & (table2['p.delta'] > dataDecMin) & (table2['p.delta'] < dataDecMax))
-            otherSubTable = table2[~otherDataInsideBox]
-            otherCat = astpyToCorr(otherSubTable)
-            xi, sig, r, Coffset = getCrossWTheta(cat, otherCat, rand_ra[~randInsideBox], rand_dec[~randInsideBox])
-        
-        #otherwise just deal with the auto correlation
-        else:
-        #calculate w of theta given our sanitized randoms and catalog data
-            xi, sig, r, Coffset = getWTheta(cat, rand_ra[~randInsideBox], rand_dec[~randInsideBox])
-
-        xi_list.append(xi)
-        sig_list.append(sig)
-        r_list.append(r)
-        Coffset_list.append(Coffset)
-
-        if debug:
-            f, (ax1, ax2) = plt.subplots(1, 2, figsize=(14,7))
-            ax1.scatter(cat.ra * 180/np.pi, cat.dec * 180/np.pi, color='blue', s=0.1)
-            ax1.scatter(rand_ra[~randInsideBox]* 180/np.pi,
-                rand_dec[~randInsideBox]* 180/np.pi, color='green', s=0.1)
-            ax1.set_xlabel('RA (degrees)')
-            ax1.set_ylabel('Dec (degrees)')
-            ax1.set_title('Randoms on top of data')
-            if table2 is not None:
-                ax1.scatter(otherCat.ra * 180/np.pi, otherCat.dec * 180/np.pi, color='red', s=0.1)
-            
-            # Repeat in the opposite order
-            ax2.scatter(rand_ra[~randInsideBox] * 180/np.pi,
-                rand_dec[~randInsideBox] * 180/np.pi, color='green', s=0.1)
-            if table2 is not None:
-                ax2.scatter(otherCat.ra * 180/np.pi, otherCat.dec * 180/np.pi, color='red', s=0.1)
-            ax2.scatter(cat.ra * 180/np.pi, cat.dec * 180/np.pi, color='blue', s=0.1)
-            ax2.set_xlabel('RA (degrees)')
-            ax2.set_ylabel('Dec (degrees)')
-            ax2.set_title('Data on top of randoms')
-
-            plt.show()
-
-    return {"xi":xi_list, "sig":sig_list, "r":r_list,
-#        "rand_ra": rand_ra, "rand_dec": rand_dec, "Coffset":Coffset_list}
-            "Coffset":Coffset_list}
 def genRandoms(ra, dec, debug=True):
     ra_min = np.min(ra)
     ra_max = np.max(ra)
@@ -255,7 +188,7 @@ def astpyToCorr(table):
     anticipating certain format form astropy catalog
     """
     cat = treecorr.Catalog(ra=table['p.alpha'].data, dec=table['p.delta'].data,
-                         ra_units='deg', dec_units='deg', g1=table['e1'], g2=table['e2'])
+        ra_units='deg', dec_units='deg', g1=table['e1'], g2=table['e2'])
     return cat
 
 def calcC(RR):
@@ -341,33 +274,6 @@ def getCrossWTheta(cat, cat2, rand_ra, rand_dec):
     Coffset = calcC(rr)
     return xi, sig, r, Coffset
 
-
-def depthCorrection(ra, dec, thresh):
-    #tells you if points are outside of gutter regions
-    insideMask = (((ra > 140.36396) & (ra < 140.94295) & (dec > 30.42135) & (dec < 30.89329))|
-    ((ra > 139.60295) & (ra < 140.18853) & (dec > 30.412424) & (dec < 30.926812)) | 
-    ((ra > 138.84335) & (ra < 139.38958) & (dec > 30.41159) & (dec < 30.903774)) |  
-    ((ra > 140.32337) & (ra < 140.98905) & (dec > 29.752018) & (dec < 30.258278)) | 
-    ((ra > 139.60984) & (ra < 140.179) & (dec > 29.7508) & (dec < 30.271778)) | 
-    ((ra > 138.84105) & (ra < 139.37342) & (dec > 29.750473) & (dec < 30.270257)) | 
-    ((ra > 140.35659) & (ra < 140.93803) & (dec > 29.090013) & (dec < 29.58593)) | 
-    ((ra > 139.6101) & (ra < 140.15043) & (dec > 29.097732) & (dec < 29.575289)) | 
-    ((ra > 138.89651) & (ra < 139.4029) & (dec > 29.086432) & (dec < 29.590978)))
-
-    rand_ra = ra[insideMask]
-    rand_dec = dec[insideMask]
-
-    numOut = ra[~insideMask].size
-    numKeep = np.around(thresh*numOut).astype(int)
-
-    ra_keep = ra[~insideMask][:numKeep]
-    dec_keep = dec[~insideMask][:numKeep]
-
-    rand_ra = np.concatenate([rand_ra, ra_keep])
-    rand_dec = np.concatenate([rand_dec, dec_keep])
-
-    return rand_ra, rand_dec
-
 def getGGL(lensCat, sourceCat):
     """
     calculate galaxy galaxy lensing
@@ -390,24 +296,6 @@ def getGGL(lensCat, sourceCat):
     nullGGL.process(sourceCat, lensCat)
     return GGL, nullGGL
 
-def getKmeans(ra, dec, n_clusters=16):
-    """
-    use kmeans algorithm to find clusters in data
-    useful for jacknife
-
-    input:
-    ra: numpy array. ra positions for data
-    dec: numpy array. dec positions for data
-
-    returns:
-    kmeans: numpy array, same length as ra and dec. 
-    tells you which cluster a point in ra,dec
-    belongs too
-    """
-    kmeans = KMeans(n_clusters=n_clusters, random_state=0).fit_predict(np.stack([ra, dec], axis=-1))
-    return kmeans
-    
-
 def makePlot(xi, sig, r):
     plt.style.use('seaborn-poster')
     plt.plot(r, xi, color='blue')
@@ -421,7 +309,6 @@ def makePlot(xi, sig, r):
     plt.xlabel(r'$\theta$ (arcmin)')
 
     plt.legend([leg], [r'$w(\theta)$'], loc='lower left')
-#    plt.xlim([0.01,2])
     plt.show()
     return
 
