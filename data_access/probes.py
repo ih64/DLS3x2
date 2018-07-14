@@ -198,7 +198,7 @@ def astpyToCorr(table):
     anticipating certain format form astropy catalog
     """
     cat = treecorr.Catalog(ra=table['p.alpha'].data, dec=table['p.delta'].data,
-        ra_units='deg', dec_units='deg', g1=table['e1'], g2=table['e2'])
+        ra_units='deg', dec_units='deg', g1=table['s.e1'], g2=table['s.e2'])
     return cat
 
 def calcC(RR):
