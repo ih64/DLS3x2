@@ -327,7 +327,7 @@ def getGGL(lens_table, source_table, n_resample=100):
         GGL.process(lens_corr, source_corr)
         gammat_list.append(GGL.xi)
         gammax_list.append(GGL.xi_im)
-        r_list.append(GGL.meanlogr)
+        r_list.append(np.exp(GGL.meanlogr))
 
     nullGGL = treecorr.NGCorrelation(min_sep=0.1, max_sep=90, nbins=10, sep_units='arcmin')
     nullGGL.process(source_corr, lens_corr)
