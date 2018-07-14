@@ -264,18 +264,18 @@ def getCrossWTheta(cat, cat2, rand_ra, rand_dec):
     r: numpy array of angular bins xi is calculated for
     """
 
-    dd = treecorr.NNCorrelation(min_sep=0.1, max_sep=120, nbins=20, sep_units='arcmin')
+    dd = treecorr.NNCorrelation(min_sep=0.1, max_sep=80, nbins=15, sep_units='arcmin')
     dd.process(cat, cat2)
     rand = treecorr.Catalog(ra=rand_ra, dec=rand_dec, ra_units='radians', dec_units='radians')
-    rr = treecorr.NNCorrelation(min_sep=0.1, max_sep=120, nbins=20, sep_units='arcmin')
+    rr = treecorr.NNCorrelation(min_sep=0.1, max_sep=80, nbins=15, sep_units='arcmin')
     rr.process(rand)
 
     r = np.exp(dd.meanlogr)
 
-    dr = treecorr.NNCorrelation(min_sep=0.1, max_sep=120, nbins=20, sep_units='arcmin')
+    dr = treecorr.NNCorrelation(min_sep=0.1, max_sep=80, nbins=15, sep_units='arcmin')
     dr.process(cat, rand)
 
-    rd = treecorr.NNCorrelation(min_sep=0.1, max_sep=120, nbins=20, sep_units='arcmin')
+    rd = treecorr.NNCorrelation(min_sep=0.1, max_sep=80, nbins=15, sep_units='arcmin')
     rd.process(rand, cat2)
 
     xi, varxi = dd.calculateXi(rr, dr, rd)
@@ -284,13 +284,13 @@ def getCrossWTheta(cat, cat2, rand_ra, rand_dec):
     Coffset = calcC(rr)
     return xi, sig, r, Coffset
 
-def getGGL(lensCat, sourceCat):
+def getGGL(lens_table, source_table, n_resample=100):
     """
     calculate galaxy galaxy lensing
 
     parameters
-    lensCat: TreeCorr catalog of lens galaxies. must have positions and shear specified 
-    sourceCat: TreeCorr catalog of source galaxies. must have positions and shear specified
+    lens_table: astropy table of lens galaxies. must have positions and shear specified 
+    source_table: astropy table of source galaxies. must have positions and shear specified
 
     returns
     GGL : galaxy galaxy lens treecorr object. 
@@ -299,12 +299,26 @@ def getGGL(lensCat, sourceCat):
         swap shear and lens planes and calculate tangential shear
         nice null test for photo-zs
     """
-    GGL = treecorr.NGCorrelation(min_sep=0.1, max_sep=100, nbins=20, sep_units='arcmin')
-    GGL.process(lensCat, sourceCat)
+    table_size = len(lens_table)
+    gammat_list = []
+    gammax_list = []
+    r_list = []
 
-    nullGGL = treecorr.NGCorrelation(min_sep=0.1, max_sep=100, nbins=20, sep_units='arcmin')
-    nullGGL.process(sourceCat, lensCat)
-    return GGL, nullGGL
+    source_corr = astpyToCorr(source_table)
+    GGL = treecorr.NGCorrelation(min_sep=0.1, max_sep=90, nbins=10, sep_units='arcmin')
+    
+    for i in range(0,n_resample):
+        resampled_idx = np.random.randint(0,table_size,table_size)
+        lens_corr = astpyToCorr(lens_table[resampled_idx])
+        GGL.process(lens_corr, source_corr)
+        gammat_list.append(GGL.xi)
+        gammax_list.append(GGL.xi_im)
+        r_list.append(GGL.meanlogr)
+
+    nullGGL = treecorr.NGCorrelation(min_sep=0.1, max_sep=90, nbins=10, sep_units='arcmin')
+    nullGGL.process(source_corr, lens_corr)
+    return {"gammat":gammat_list, "gammax":gammax_list, "r":r_list,
+        "gammat_flip":nullGGL.xi, "r_flip":nullGGL.meanlogr}
 
 def makePlot(xi, sig, r):
     plt.style.use('seaborn-poster')
