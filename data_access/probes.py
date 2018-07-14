@@ -283,6 +283,16 @@ def getCrossWTheta(cat, cat2, rand_ra, rand_dec):
 
     Coffset = calcC(rr)
     return xi, sig, r, Coffset
+def shearBias(lens_table):
+    """
+    calculate the shear muliplicative bias
+    James Jee has a way of using the R band magnitude
+    as a proxy for m
+    """
+    mb = 6*(10**-4) * np.sign(lens_table['p.r'] - 20) * np.abs(lens_table['p.r'] - 20)**3.26 + 1.036
+    lens_table['s.e1'] *= mb
+    lens_table['s.e2'] *= mb
+    return lens_table
 
 def getGGL(lens_table, source_table, n_resample=100):
     """
@@ -303,6 +313,10 @@ def getGGL(lens_table, source_table, n_resample=100):
     gammat_list = []
     gammax_list = []
     r_list = []
+
+    #calibrate the shear bias for both tables
+    lens_table = shearBias(lens_table)
+    source_table = shearBias(source_table)
 
     source_corr = astpyToCorr(source_table)
     GGL = treecorr.NGCorrelation(min_sep=0.1, max_sep=90, nbins=10, sep_units='arcmin')
