@@ -283,6 +283,7 @@ def getCrossWTheta(cat, cat2, rand_ra, rand_dec):
 
     Coffset = calcC(rr)
     return xi, sig, r, Coffset
+
 def shearBias(lens_table):
     """
     calculate the shear muliplicative bias
@@ -294,17 +295,25 @@ def shearBias(lens_table):
     lens_table['s.e2'] *= mb
     return lens_table
 
-def getGGL(lens_table, source_table, n_resample=100):
+def getGGL(lens_table, source_table, n_resample=100, swap_test=True):
     """
     calculate galaxy galaxy lensing
 
     parameters
     lens_table: astropy table of lens galaxies. must have positions and shear specified 
     source_table: astropy table of source galaxies. must have positions and shear specified
+    n_resample: number of bootstrap resamplings to do. default is 100
+    swap_test: calculate the tangential shear swapping lens and souces 
 
-    returns
-    GGL : galaxy galaxy lens treecorr object. 
-        holds information on tangentail shear for lenses
+    returns a dictionary containing the following:
+    gammat: tangential shear for each boostrap iterations. a list of n_resample
+        python arrays
+    gammax: tangential shear calculated after rotating sources 45 degrees
+    r: mean center of radial bins
+    gammat_flip: tangential shear calculated for swap test
+    gammax_flip: tangential shear calculated after rotating sources 45 degrees
+        calculated for the swap
+    r_flip: mean center of radial bins 
     nullGGL : galaxy galaxy lens treecorr object. 
         swap shear and lens planes and calculate tangential shear
         nice null test for photo-zs
@@ -327,11 +336,27 @@ def getGGL(lens_table, source_table, n_resample=100):
         gammat_list.append(GGL.xi)
         gammax_list.append(GGL.xi_im)
         r_list.append(np.exp(GGL.meanlogr))
+    if swap_test == False:
+        return {"gammat":gammat_list, "gammax":gammax_list, "r":r_list}
 
-    nullGGL = treecorr.NGCorrelation(min_sep=0.1, max_sep=90, nbins=10, sep_units='arcmin')
-    nullGGL.process(source_corr, lens_corr)
-    return {"gammat":gammat_list, "gammax":gammax_list, "r":r_list,
-        "gammat_flip":nullGGL.xi, "r_flip":nullGGL.meanlogr}
+    else:
+        nullGGL = treecorr.NGCorrelation(min_sep=0.1, max_sep=90, nbins=10, sep_units='arcmin')
+        nullGGL.process(source_corr, lens_corr)
+        return {"gammat":gammat_list, "gammax":gammax_list, "r":r_list,
+            "gammat_flip":nullGGL.xi, "r_flip":np.exp(nullGGL.meanlogr)}
+
+def getRandomGGL(source_table, n_resample=100):
+    '''use a catalog of randoms as lens objects
+    '''
+    #read in the randoms and make a master table
+    fields = ('F1','F2','F3','F4','F5')
+    random_tables =[ascii.read(f+'randoms.csv') for f in fields]
+    master_randoms = vstack(random_tables)
+    #the randoms are ~6 times bigger than the lens catalogs
+    master_randoms = master_randoms[::6]
+
+    gglResult = getGGL(master_randoms, source_table, n_resample=n_resample, swap_test=False)
+    return gglResult
 
 def makePlot(xi, sig, r):
     plt.style.use('seaborn-poster')
