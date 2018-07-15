@@ -317,13 +317,12 @@ def getGGL(lens_table, source_table, n_resample=100):
     #calibrate the shear bias for both tables
     lens_table = shearBias(lens_table)
     source_table = shearBias(source_table)
-
     source_corr = astpyToCorr(source_table)
-    GGL = treecorr.NGCorrelation(min_sep=0.1, max_sep=90, nbins=10, sep_units='arcmin')
     
     for i in range(0,n_resample):
         resampled_idx = np.random.randint(0,table_size,table_size)
         lens_corr = astpyToCorr(lens_table[resampled_idx])
+        GGL = treecorr.NGCorrelation(min_sep=0.1, max_sep=90, nbins=10, sep_units='arcmin')
         GGL.process(lens_corr, source_corr)
         gammat_list.append(GGL.xi)
         gammax_list.append(GGL.xi_im)
