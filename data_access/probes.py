@@ -348,7 +348,7 @@ def getGGL(lens_table, source_table, n_resample=100, swap_test=True,
         return {"gammat":gammat_list, "gammax":gammax_list, "r":r_list,
             "gammat_flip":nullGGL.xi, "r_flip":np.exp(nullGGL.meanlogr)}
 
-def getRandomGGL(source_table):
+def getRandomGGL(source_table, n_resample=100):
     '''use a catalog of randoms as lens objects
     '''
     #read in the randoms and make a master table
@@ -357,21 +357,25 @@ def getRandomGGL(source_table):
     master_randoms = vstack(random_tables)
     #the randoms are ~6 times bigger than the lens catalogs
     master_randoms = master_randoms[::6]
-    random_cat = treecorr.Catalog(ra=master_randoms['ra'].data, dec=master_randoms['dec'].data,
-        ra_units='radians', dec_units='radians')
 
     gammat_list = []
     gammax_list = []
     r_list = []
 
     source_corr = astpyToCorr(source_table)
+    table_size = len(master_randoms)
 
-    GGL = treecorr.NGCorrelation(min_sep=0.1, max_sep=90, nbins=10, sep_units='arcmin')
-    GGL.process(random_cat, source_corr)
-    gammat_list.append(GGL.xi)
-    gammax_list.append(GGL.xi_im)
-    r_list.append(np.exp(GGL.meanlogr))
-
+    for i in range(0,n_resample):
+        resampled_idx = np.random.randint(0,table_size,table_size)
+        random_cat = treecorr.Catalog(ra=master_randoms[resampled_idx]['ra'].data,
+            dec=master_randoms[resampled_idx]['dec'].data,
+            ra_units='radians', dec_units='radians')
+        GGL = treecorr.NGCorrelation(min_sep=0.1, max_sep=90, nbins=10, sep_units='arcmin')
+        GGL.process(random_cat, source_corr)
+        gammat_list.append(GGL.xi)
+        gammax_list.append(GGL.xi_im)
+        r_list.append(np.exp(GGL.meanlogr))
+    
     return {'gammat':gammat_list, "gammax":gammax_list, "r":r_list}
 
 def makePlot(xi, sig, r):
