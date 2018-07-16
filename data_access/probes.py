@@ -348,7 +348,7 @@ def getGGL(lens_table, source_table, n_resample=100, swap_test=True,
         return {"gammat":gammat_list, "gammax":gammax_list, "r":r_list,
             "gammat_flip":nullGGL.xi, "r_flip":np.exp(nullGGL.meanlogr)}
 
-def getRandomGGL(source_table, n_resample=100):
+def getRandomGGL(source_table):
     '''use a catalog of randoms as lens objects
     '''
     #read in the randoms and make a master table
@@ -357,16 +357,22 @@ def getRandomGGL(source_table, n_resample=100):
     master_randoms = vstack(random_tables)
     #the randoms are ~6 times bigger than the lens catalogs
     master_randoms = master_randoms[::6]
-    master_randoms.rename_column('ra','p.alpha')
-    master_randoms.rename_column('dec','p.delta')
-    master_randoms['p.alpha']*= 180/np.pi
-    master_randoms['p.delta']*=180/np.pi
-    master_randoms['s.e1'] = np.zeros(len(master_randoms))
-    master_randoms['s.e2'] = np.zeros(len(master_randoms))
+    random_cat = treecorr.Catalog(ra=master_randoms['ra'].data, dec=master_randoms['dec'].data,
+        ra_units='radians', dec_units='radians')
 
-    gglResult = getGGL(master_randoms, source_table,
-        n_resample=n_resample, swap_test=False, cal_lens=False)
-    return gglResult
+    gammat_list = []
+    gammax_list = []
+    r_list = []
+
+    source_corr = astpyToCorr(source_table)
+
+    GGL = treecorr.NGCorrelation(min_sep=0.1, max_sep=90, nbins=10, sep_units='arcmin')
+    GGL.process(random_cat, source_corr)
+    gammat_list.append(GGL.xi)
+    gammax_list.append(GGL.xi_im)
+    r_list.append(np.exp(GGL.meanlogr))
+
+    return {'gammat':gammat_list, "gammax":gammax_list, "r":r_list}
 
 def makePlot(xi, sig, r):
     plt.style.use('seaborn-poster')
