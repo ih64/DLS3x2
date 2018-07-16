@@ -357,6 +357,12 @@ def getRandomGGL(source_table, n_resample=100):
     master_randoms = vstack(random_tables)
     #the randoms are ~6 times bigger than the lens catalogs
     master_randoms = master_randoms[::6]
+    master_randoms.rename_column('ra','p.alpha')
+    master_randoms.rename_column('dec','p.delta')
+    master_randoms['p.alpha']*= 180/np.pi
+    master_randoms['p.delta']*=180/np.pi
+    master_randoms['s.e1'] = np.zeros(len(master_randoms))
+    master_randoms['s.e2'] = np.zeros(len(master_randoms))
 
     gglResult = getGGL(master_randoms, source_table,
         n_resample=n_resample, swap_test=False, cal_lens=False)
