@@ -358,7 +358,8 @@ def getRandomGGL(source_table, n_resample=100):
     #the randoms are ~6 times bigger than the lens catalogs
     master_randoms = master_randoms[::6]
 
-    gglResult = getGGL(master_randoms, source_table, n_resample=n_resample, swap_test=False)
+    gglResult = getGGL(master_randoms, source_table,
+        n_resample=n_resample, swap_test=False, cal_lens=False)
     return gglResult
 
 def makePlot(xi, sig, r):
