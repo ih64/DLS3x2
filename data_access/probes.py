@@ -295,7 +295,8 @@ def shearBias(lens_table):
     lens_table['s.e2'] *= mb
     return lens_table
 
-def getGGL(lens_table, source_table, n_resample=100, swap_test=True):
+def getGGL(lens_table, source_table, n_resample=100, swap_test=True,
+    cal_lens=True, cal_source=True):
     """
     calculate galaxy galaxy lensing
 
@@ -324,8 +325,10 @@ def getGGL(lens_table, source_table, n_resample=100, swap_test=True):
     r_list = []
 
     #calibrate the shear bias for both tables
-    lens_table = shearBias(lens_table)
-    source_table = shearBias(source_table)
+    if cal_lens:
+        lens_table = shearBias(lens_table)
+    if cal_source:
+        source_table = shearBias(source_table)
     source_corr = astpyToCorr(source_table)
     
     for i in range(0,n_resample):
