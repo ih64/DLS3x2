@@ -219,19 +219,9 @@ AND p.b is NOT NULL
 AND p.v is NOT NULL
 AND p.z is NOT NULL
 AND p.r < 22
-AND p.r > 18
+AND p.r > 19.5
 # The R band probability that object is a point source `d.Dlsqc_prob`
 AND d.Dlsqc_prob<0.1
-# Shape cut
-AND s.b>0.1
 AND z.z_b < .8
-AND z.z_b>0.6
-# Ellipticity error cut
-AND s.de<0.25
-# F5 bound cut F5 is a 2x2 sq. degree field centered at RA=13:59:20, DEC=-11:03:00
-# Due to ambiguous info on DLS website and James 2015 cosmic shear paper about the location
-# of the field I will use the SQL keyword instead
-# AND p.alpha between 208.7 and 210.85
-# AND p.delta between -12.1 and -10.1;
-#AND p.subfield LIKE 'F2%'
+AND z.z_b > 0.6
 GROUP BY p.subfield 
