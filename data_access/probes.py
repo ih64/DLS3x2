@@ -162,7 +162,7 @@ def calcProbes(table, table2=None, debug=False, n_resample=100):
         otherCat = astpyToCorr(table2)
         xi, sig, r, Coffset = getCrossWTheta(cat, otherCat, master_randoms['ra'],
             master_randoms['dec'])
-    
+        return {"xi":xi, "sig":sig, "r":r, "Coffset":Coffset}
     #otherwise just deal with the auto correlation
     else:
         for i in range(0,n_resample):
@@ -174,7 +174,7 @@ def calcProbes(table, table2=None, debug=False, n_resample=100):
                 sig_list.append(sig)
                 r_list.append(r)
 
-    return {"xi":xi_list, "sig":sig_list, "r":r_list, "Coffset":Coffset}
+        return {"xi":xi_list, "sig":sig_list, "r":r_list, "Coffset":Coffset}
 
 def genRandoms(ra, dec, debug=True):
     ra_min = np.min(ra)
