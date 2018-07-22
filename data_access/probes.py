@@ -319,7 +319,8 @@ def getGGL(lens_table, source_table, n_resample=100, swap_test=True,
         swap shear and lens planes and calculate tangential shear
         nice null test for photo-zs
     """
-    table_size = len(lens_table)
+    lens_tab_size = len(lens_table)
+    src_tab_size = len(source_table)
     gammat_list = []
     gammax_list = []
     r_list = []
@@ -329,16 +330,22 @@ def getGGL(lens_table, source_table, n_resample=100, swap_test=True,
         lens_table = shearBias(lens_table)
     if cal_source:
         source_table = shearBias(source_table)
-    source_corr = astpyToCorr(source_table)
     
+    #each iteration in the loop is a bootstrap resample
     for i in range(0,n_resample):
-        resampled_idx = np.random.randint(0,table_size,table_size)
-        lens_corr = astpyToCorr(lens_table[resampled_idx])
+        #make new catalogs by resampling input lens and src
+        lens_resamp_idx = np.random.randint(0,lens_tab_size,lens_tab_size)
+        lens_corr = astpyToCorr(lens_table[lens_resamp_idx])
+        src_resamp_idx = np.random.randint(0,src_tab_size,src_tab_size)
+        source_corr = astpyToCorr(source_table[src_resamp_idx])
+        #now make correlation functions
         GGL = treecorr.NGCorrelation(min_sep=0.1, max_sep=90, nbins=10, sep_units='arcmin')
         GGL.process(lens_corr, source_corr)
         gammat_list.append(GGL.xi)
         gammax_list.append(GGL.xi_im)
         r_list.append(np.exp(GGL.meanlogr))
+    
+    #option to do a one off lens source swap 
     if swap_test == False:
         return {"gammat":gammat_list, "gammax":gammax_list, "r":r_list}
 
@@ -362,14 +369,21 @@ def getRandomGGL(source_table, n_resample=100):
     gammax_list = []
     r_list = []
 
-    source_corr = astpyToCorr(source_table)
-    table_size = len(master_randoms)
-
+    lens_tab_size = len(master_randoms)
+    src_tab_size = len(source_table)
+    
+    #calibrate the shear bias
+    source_table = shearBias(source_table)
+    
     for i in range(0,n_resample):
-        resampled_idx = np.random.randint(0,table_size,table_size)
-        random_cat = treecorr.Catalog(ra=master_randoms[resampled_idx]['ra'].data,
-            dec=master_randoms[resampled_idx]['dec'].data,
+        #make new catalogs by resampling input lens and src
+        lens_resamp_idx = np.random.randint(0,lens_tab_size,lens_tab_size)
+        src_resamp_idx = np.random.randint(0, src_tab_size, src_tab_size)
+        random_cat = treecorr.Catalog(ra=master_randoms[lens_resamp_idx]['ra'].data,
+            dec=master_randoms[lens_resamp_idx]['dec'].data,
             ra_units='radians', dec_units='radians')
+        source_corr = astpyToCorr(source_table[src_resamp_idx])
+        #now make correlation functions
         GGL = treecorr.NGCorrelation(min_sep=0.1, max_sep=90, nbins=10, sep_units='arcmin')
         GGL.process(random_cat, source_corr)
         gammat_list.append(GGL.xi)
