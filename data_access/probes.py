@@ -295,7 +295,20 @@ def shearBias(lens_table):
     lens_table['s.e2'] *= mb
     return lens_table
 
-def getGGL(lens_table, source_table, n_resample=100, swap_test=True,
+def jack_lens(lens_table, n_clusters=9):
+    X = np.array([lens_table['p.alpha'], lens_table['p.delta']]).T
+    km = KMeans(n_clusters = n_clusters)
+    labels = km.fit_predict(X)
+    return labels
+
+def lens_labels(table_list, n_clusters=9):
+    label_list = [jack_lens(lens_table, n_clusters) for lens_table in table_list]
+    for i in range(0, len(table_list)):
+        label_list[i] += i*n_clusters
+
+    return np.concatenate(label_list)
+
+def getGGL(lens_table, source_table, lens_labels, swap_test=True,
     cal_lens=True, cal_source=True):
     """
     calculate galaxy galaxy lensing
@@ -319,11 +332,13 @@ def getGGL(lens_table, source_table, n_resample=100, swap_test=True,
         swap shear and lens planes and calculate tangential shear
         nice null test for photo-zs
     """
-    lens_tab_size = len(lens_table)
-    src_tab_size = len(source_table)
+
     gammat_list = []
     gammax_list = []
     r_list = []
+
+    #how many jackknife blocks are there
+    jk_ids = np.unique(lens_labels)
 
     #calibrate the shear bias for both tables
     if cal_lens:
@@ -331,13 +346,14 @@ def getGGL(lens_table, source_table, n_resample=100, swap_test=True,
     if cal_source:
         source_table = shearBias(source_table)
     
+    source_corr = astpyToCorr(source_table)
+
     #each iteration in the loop is a bootstrap resample
-    for i in range(0,n_resample):
+    for i in range(0,jk_ids):
+        #make a mask to give us the right sample of the tables
+        jk_mask = lens_labels == i        
         #make new catalogs by resampling input lens and src
-        lens_resamp_idx = np.random.randint(0,lens_tab_size,lens_tab_size)
-        lens_corr = astpyToCorr(lens_table[lens_resamp_idx])
-        src_resamp_idx = np.random.randint(0,src_tab_size,src_tab_size)
-        source_corr = astpyToCorr(source_table[src_resamp_idx])
+        lens_corr = astpyToCorr(lens_table[~jk_mask])
         #now make correlation functions
         GGL = treecorr.NGCorrelation(min_sep=0.1, max_sep=90, nbins=10, sep_units='arcmin')
         GGL.process(lens_corr, source_corr)
@@ -407,5 +423,3 @@ def makePlot(xi, sig, r):
     plt.legend([leg], [r'$w(\theta)$'], loc='lower left')
     plt.show()
     return
-
-        
