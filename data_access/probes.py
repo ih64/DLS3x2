@@ -106,7 +106,7 @@ def byFields(table, field):
     '''
     helper function to return a table of a particular field only
     '''
-    subfield_vals = table['p.subfield']
+    subfield_vals = table['subfield']
     field_vals = np.array([i[:2] for i in subfield_vals ] )
     mask = field_vals == field
     return table[mask]
@@ -124,8 +124,8 @@ def dumpRandoms(table, debug=False):
     for f in fields:
         tableViews[f]= {}
         tableViews[f]['galaxies'] =  byFields(table, f)
-        rand_ra, rand_dec = genRandoms(tableViews[f]['galaxies']['p.alpha']*(np.pi/180),
-            tableViews[f]['galaxies']['p.delta']*(np.pi/180))
+        rand_ra, rand_dec = genRandoms(tableViews[f]['galaxies']['alpha']*(np.pi/180),
+            tableViews[f]['galaxies']['delta']*(np.pi/180))
         tableViews[f]['rand_ra'] = rand_ra
         tableViews[f]['rand_dec'] = rand_dec
 
@@ -197,8 +197,8 @@ def astpyToCorr(table):
     turn an astropy table into a treecorr catalog
     anticipating certain format form astropy catalog
     """
-    cat = treecorr.Catalog(ra=table['p.alpha'].data, dec=table['p.delta'].data,
-        ra_units='deg', dec_units='deg', g1=table['s.e1'], g2=table['s.e2'])
+    cat = treecorr.Catalog(ra=table['alpha'].data, dec=table['delta'].data,
+        ra_units='deg', dec_units='deg', g1=table['e1'], g2=table['e2'])
     return cat
 
 def calcC(RR):
@@ -290,9 +290,9 @@ def shearBias(lens_table):
     James Jee has a way of using the R band magnitude
     as a proxy for m
     """
-    mb = 6*(10**-4) * np.sign(lens_table['p.r'] - 20) * np.abs(lens_table['p.r'] - 20)**3.26 + 1.036
-    lens_table['s.e1'] *= mb
-    lens_table['s.e2'] *= mb
+    mb = 6*(10**-4) * np.sign(lens_table['r'] - 20) * np.abs(lens_table['r'] - 20)**3.26 + 1.036
+    lens_table['e1'] *= mb
+    lens_table['e2'] *= mb
     return lens_table
 
 def getGGL(lens_table, source_table, n_resample=100, swap_test=True,
