@@ -1,0 +1,4 @@
+# Processed Thu Oct 20 23:26:24 2005 by /sandbox/pgee/projects/fix/bin/makereg -b -a150 -z+20 -x2.0 -r94 -w10000 -l10000 F2p22R.all.cat
+#Processed Thu Oct 20 23:26:24 2005 by /sandbox/pgee/projects/fix/bin/combinereg
+# Processed Thu Oct 20 23:26:24 2005 by /sandbox/pgee/projects/fix/bin/makereg -c white -a25 -r2 -e0 -f F2p22R.make.cat tmpmake3
+# Created by starbleed  starbleed -b -r1 -s15000 /home/DLS/Stacks/2005/F2/p22/R/dlsmake.fits tmpmake2 tmpmake3

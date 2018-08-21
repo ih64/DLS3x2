@@ -1,0 +1,64 @@
+# Processed Thu Oct 20 23:18:26 2005 by /sandbox/pgee/projects/fix/bin/makereg -b -a150 -z+20 -x2.0 -r94 -w10000 -l10000 F2p11R.all.cat
+#Processed Thu Oct 20 23:18:26 2005 by /sandbox/pgee/projects/fix/bin/combinereg
+# Processed Thu Oct 20 23:18:26 2005 by /sandbox/pgee/projects/fix/bin/makereg -c white -a25 -r2 -e0 -f F2p11R.make.cat tmpmake3
+# Created by starbleed  starbleed -b -r1 -s15000 /home/DLS/Stacks/2005/F2/p11/R/dlsmake.fits tmpmake2 tmpmake3
+# edge regions added by borders Wed Jun 13 13:53:31 PDT 2007 from F2p11R.joined.reg
+image;box(175.00,250.00,350.00,500.00)  # color=red
+image;box(175.00,750.00,350.00,500.00)  # color=red
+image;box(175.00,1250.00,350.00,500.00)  # color=red
+image;box(175.00,1750.00,350.00,500.00)  # color=red
+image;box(175.00,2250.00,350.00,500.00)  # color=red
+image;box(175.00,2750.00,350.00,500.00)  # color=red
+image;box(175.00,3250.00,350.00,500.00)  # color=red
+image;box(175.00,3750.00,350.00,500.00)  # color=red
+image;box(175.00,4250.00,350.00,500.00)  # color=red
+image;box(175.00,4750.00,350.00,500.00)  # color=red
+image;box(175.00,5250.00,350.00,500.00)  # color=red
+image;box(175.00,5750.00,350.00,500.00)  # color=red
+image;box(175.00,6250.00,350.00,500.00)  # color=red
+image;box(175.00,6750.00,350.00,500.00)  # color=red
+image;box(175.00,7250.00,350.00,500.00)  # color=red
+image;box(175.00,7750.00,350.00,500.00)  # color=red
+image;box(175.00,8250.00,350.00,500.00)  # color=red
+image;box(175.00,8750.00,350.00,500.00)  # color=red
+image;box(175.00,9250.00,350.00,500.00)  # color=red
+image;box(175.00,9750.00,350.00,500.00)  # color=red
+image;box(600.00,150.00,500.00,300.00)  # color=red
+image;box(1100.00,150.00,500.00,300.00)  # color=red
+image;box(1600.00,150.00,500.00,300.00)  # color=red
+image;box(2100.00,150.00,500.00,300.00)  # color=red
+image;box(2600.00,150.00,500.00,300.00)  # color=red
+image;box(3100.00,150.00,500.00,300.00)  # color=red
+image;box(3600.00,150.00,500.00,300.00)  # color=red
+image;box(4100.00,150.00,500.00,300.00)  # color=red
+image;box(4600.00,150.00,500.00,300.00)  # color=red
+image;box(5100.00,150.00,500.00,300.00)  # color=red
+image;box(5600.00,150.00,500.00,300.00)  # color=red
+image;box(6100.00,150.00,500.00,300.00)  # color=red
+image;box(6600.00,150.00,500.00,300.00)  # color=red
+image;box(7100.00,150.00,500.00,300.00)  # color=red
+image;box(7600.00,150.00,500.00,300.00)  # color=red
+image;box(8100.00,150.00,500.00,300.00)  # color=red
+image;box(8600.00,150.00,500.00,300.00)  # color=red
+image;box(9100.00,150.00,500.00,300.00)  # color=red
+image;box(9600.00,150.00,500.00,300.00)  # color=red
+image;box(9925.00,150.00,150.00,300.00)  # color=red
+image;box(600.00,500.00,500.00,400.00)  # color=red
+image;box(1100.00,500.00,500.00,400.00)  # color=red
+image;box(1575.00,500.00,450.00,400.00)  # color=red
+image;box(550.00,950.00,400.00,500.00)  # color=red
+image;box(550.00,1400.00,400.00,400.00)  # color=red
+image;box(475.00,1750.00,250.00,300.00)  # color=red
+image;box(375.00,2150.00,50.00,500.00)  # color=red
+image;box(375.00,2575.00,50.00,350.00)  # color=red
+image;box(375.00,8700.00,50.00,500.00)  # color=red
+image;box(375.00,9200.00,50.00,500.00)  # color=red
+image;box(375.00,9700.00,50.00,500.00)  # color=red
+image;box(375.00,9975.00,50.00,50.00)  # color=red
+image;box(450.00,9850.00,100.00,300.00)  # color=red
+image;box(525.00,9900.00,50.00,200.00)  # color=red
+image;box(775.00,925.00,50.00,450.00)  # color=red
+image;box(875.00,725.00,150.00,50.00)  # color=red
+image;box(1925.00,325.00,250.00,50.00)  # color=red
+image;box(1825.00,375.00,50.00,50.00)  # color=red
+image;box(9950.00,350.00,100.00,100.00)  # color=red

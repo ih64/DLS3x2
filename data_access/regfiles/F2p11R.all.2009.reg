@@ -1,0 +1,730 @@
+# Processed Thu Dec  2 11:50:42 2010 by /home/pgee/bin/makereg -m30 -q.4 -a150 -r70 -z1.4 -x1.1+10 -y+10 -b -w 0,0,10000,10000 ./regions/F2/p11/F2p11R.all.2009.cat
+# Created by starbleed -a 25 -c -r 1.0 -v -b -s 18000 /mnt/DLSNEW/Stacks/2009/F2/p11/R/dlsmake_sat.fits ./regions/work/F2/p11/temp5 ./regions/F2/p11/F2p11R.all.2009.cat, Fri Feb  5 17:05:14 2010
+# Processed 17:05:03 2010-Feb-05 by fiatconcat ./regions/work/F2/p11/temp2 ./regions/work/F2/p11/temp4 > ./regions/work/F2/p11/temp5
+# Comments from file 0: ./regions/work/F2/p11/temp2
+# created by Fri Feb  5 17:04:50 2010 by /afs/soft/bin64/fiatrecolumn 1-4,7,8 ./regions/work/F2/p11/F2p11R.fromold.cat
+# history: 
+# Processed Thu Feb  4 09:18:24 2010 by ./makereg -b -a25 -z+20 -x2.0 -r94 -w0,0,10000,10000 -f ./regions/work/F2/p11/temp1 ./regions/F2/p11/F2p11R.all.2005.cat
+#Processed Thu Oct 20 23:18:26 2005 by /sandbox/pgee/projects/fix/bin/combinereg
+# Processed Thu Oct 20 23:18:26 2005 by /sandbox/pgee/projects/fix/bin/makereg -c white -a25 -r2 -e0 -f F2p11R.make.cat tmpmake3
+# Created by starbleed  starbleed -b -r1 -s15000 /home/DLS/Stacks/2005/F2/p11/R/dlsmake.fits tmpmake2 tmpmake3
+# modified Thu Feb  4 09:18:41 2010 by /afs/soft/bin64/fiatfilter x>1 && x <10000 && y>1 && y<10000 && radius>0 ./regions/work/F2/p11/temp1
+# Comments from file 1: ./regions/work/F2/p11/temp4
+# SE Command line: sex -c sex_defaults/default_calib.sex -CATALOG_NAME catalogs/F2/p11/R/F2p11R.initial -MAG_ZEROPOINT 32.695 -CHECKIMAGE_TYPE SEGMENTATION -CHECKIMAGE_NAME catalogs/F2/p11/R/segmentation.fits -ANALYSIS_THRESH 18400 -DETECT_THRESH 18400 /mnt/DLSNEW/F2/p11/R/dlsmake.fits,/mnt/DLSNEW/F2/p11/R/dlsmake.fits
+# # Default configuration file for SExtractor 2.4.4.cmr.1
+# # EB 2006-03-06
+# #
+#  
+# #-------------------------------- Catalog ------------------------------------
+#  
+# CATALOG_NAME     initial.sexcat       # name of the output catalog
+# CATALOG_TYPE     ASCII_HEAD
+# # WAS ASCII_HEAD_PARAM: change back when available     # "NONE","ASCII_HEAD","ASCII","FITS_1.0"
+#                                 # "FITS_LDAC" or "FITS_TPX"
+#  
+# PARAMETERS_NAME  sex_defaults/default_calib.param
+# 
+# #sex_defaults/default_calib.param  # name of the file containing catalog contents
+#  
+# #------------------------------- Extraction ----------------------------------
+#  
+# DETECT_TYPE      CCD            # "CCD" or "PHOTO"
+# DETECT_MINAREA   6              # minimum number of pixels above threshold
+# THRESH_TYPE      ABSOLUTE       # threshold type: "RELATIVE" (in sigmas)
+#                                 # or "ABSOLUTE" (in ADUs)
+# DETECT_THRESH    18400        # modified by mkcatalog
+# ANALYSIS_THRESH  18400        # modified by mkcatalog
+#  
+# FILTER           Y              # apply filter for detection ("Y" or "N")?
+# FILTER_NAME   sex_defaults/gauss_3.0_7x7_calib.conv  # name of the file containing the filter
+# #FILTER_NAME      default.conv   # name of the file containing the filter
+# FILTER_THRESH                   # Threshold[s] for retina filtering
+#  
+# DEBLEND_NTHRESH  32             # Number of deblending sub-thresholds
+# DEBLEND_MINCONT  0.0001    # Minimum contrast parameter for deblending
+#  
+# CLEAN            N              # Clean spurious detections? (Y or N)?
+# CLEAN_PARAM      2.0            # Cleaning efficiency
+#  
+# MASK_TYPE        CORRECT        # type of detection MASKing: can be one of
+#                                 # "NONE", "BLANK" or "CORRECT"
+#  
+# #-------------------------------- WEIGHTing ----------------------------------
+# 
+# WEIGHT_TYPE      NONE           # type of WEIGHTing: "NONE", "BACKGROUND",
+#                                 # "MAP_RMS", "MAP_VAR" or "MAP_WEIGHT"
+# WEIGHT_IMAGE     fakevar.fits    # weight-map filename
+# WEIGHT_GAIN      N              # modulate gain (E/ADU) with weights? (Y/N)
+# WEIGHT_THRESH                   # weight threshold[s] for bad pixels
+# 
+# #-------------------------------- FLAGging -----------------------------------
+# 
+# FLAG_IMAGE       flag.fits      # filename for an input FLAG-image
+# FLAG_TYPE        OR             # flag pixel combination: "OR", "AND",
+#                                 # "MIN", "MAX", "MOST"
+# 
+# #------------------------------ Photometry -----------------------------------
+#  
+# PHOT_APERTURES 	3.56,7.12,9.49,14.24,18.99,28.48,47.47,94.94,130,160
+# ####27.2,32.1,35.0,38.9,42.8,46.7,50.6,54.5 # MAG_APER aperture diameter(s) in pixels
+# ###PHOT_APERTURES   28.2,37.6,47.0,56.4  # MAG_APER aperture diameter(s) in pixels
+# PHOT_AUTOPARAMS  2.5, 3.5       # MAG_AUTO parameters: <Kron_fact>,<min_radius>
+# PHOT_PETROPARAMS 2.0, 3.5       # MAG_PETRO parameters: <Petrosian_fact>,
+#                                 # <min_radius>
+# PHOT_AUTOAPERS   0.0,0.0        # <estimation>,<measurement> minimum apertures
+#                                 # for MAG_AUTO and MAG_PETRO
+# PHOT_FLUXFRAC    0.5            # flux fraction[s] used for FLUX_RADIUS
+#  
+# SATUR_LEVEL      100000          # level (in ADUs) at which arises saturation
+#  
+# MAG_ZEROPOINT    32.695        # modified by mkcatalog
+# MAG_GAMMA        4.0            # gamma of emulsion (for photographic scans)
+# GAIN             1e10           # detector gain in e-/ADU
+#  
+# #------------------------- Star/Galaxy Separation ----------------------------
+#  
+# SEEING_FWHM      1.2            # stellar FWHM in arcsec
+# STARNNW_NAME     sex_defaults/default_calib.nnw  # Neural-Network_Weight table filename
+#  
+# #------------------------------ Background -----------------------------------
+#  
+# BACK_TYPE        MANUAL          # "AUTO" or "MANUAL"
+# BACK_VALUE       0.0            # Default background value in MANUAL mode
+# BACK_SIZE        64             # Background mesh: <size> or <width>,<height>
+# BACK_FILTERSIZE  3              # Background filter: <size> or <width>,<height>
+#  
+# BACKPHOTO_TYPE   GLOBAL         # can be "GLOBAL" or "LOCAL"
+# BACKPHOTO_THICK  24             # thickness of the background LOCAL annulus
+# BACK_FILTTHRESH  0.0            # Threshold above which the background-
+#                                 # map filter operates
+#  
+# #------------------------------ Check Image ----------------------------------
+#  
+# CHECKIMAGE_TYPE       NONE      # can be one of "NONE", "BACKGROUND",
+#                                 # "MINIBACKGROUND", "-BACKGROUND", "OBJECTS",
+#                                 # "-OBJECTS", "SEGMENTATION", "APERTURES",
+#                                 # or "FILTERED"
+# CHECKIMAGE_NAME  check.fits     # Filename for the check-image
+#  
+# #--------------------- Memory (change with caution!) -------------------------
+#  
+# MEMORY_OBJSTACK  30000          # number of objects in stack
+# MEMORY_PIXSTACK  3000000        # number of pixels in stack
+# MEMORY_BUFSIZE   1024           # number of lines in buffer
+#  
+# #------------------------------- ASSOCiation ---------------------------------
+# 
+# ASSOC_NAME       sky.list       # name of the ASCII file to ASSOCiate
+# ASSOC_PARAMS     2,3,4          # columns of xpos,ypos[,mag]
+# ASSOC_RADIUS     2.0            # cross-matching radius (pixels)
+# ASSOC_TYPE       MAG_SUM        # ASSOCiation method: "FIRST", "NEAREST",
+#                                 # "MEAN", "MAG_MEAN", "SUM", "MAG_SUM",
+#                                 #"MIN" or "MAX"
+# ASSOCSELEC_TYPE  MATCHED        # ASSOC selection type: "ALL", "MATCHED"
+#                                 # or "-MATCHED"
+# 
+# #----------------------------- Miscellaneous ---------------------------------
+#  
+# VERBOSE_TYPE     NORMAL         # can be "QUIET", "NORMAL" or "FULL"
+# 
+# #----------------------------------- Other -----------------------------------
+# 
+# # this was commented out 11-18-08 DMW
+# #FITS_UNSIGNED    N
+# #INTERP_MAXXLAG   16
+# #INTERP_MAXYLAG   16
+# #INTERP_TYPE      ALL
+# #MAMA_CORFLEX     3.3e-5
+# #PSF_NAME         default.psf
+# #PSF_NMAX         11
+# #PSFDISPLAY_TYPE  SPLIT
+# #SOM_NAME         default.som
+# converted from sextractor format Tue Apr 21 10:02:20 PDT 2009
+# via the command: /usr/local/dls/bin/sex2fiat catalogs/F2/p11/R/F2p11R.initial
+# Processed by regfilter /sandbox/pgee/mkcatalog/dual_1.0/F2/p11/R/F2p11R.sat.cat ./regions/work/F2/p11/F2p11R.old.all.reg on 2/6/2010 1:5:3
+# modified Fri Feb  5 17:05:03 2010 by /afs/soft/bin64/fiatfilter isoarea>25 ./regions/work/F2/p11/temp
+# created Fri Feb  5 17:05:03 2010 by 
+# /home/pgee/bin/fiatlist -n- x, ,y, ,ra, ,dec, ,mag, ,mag ./regions/work/F2/p11/F2p11R.missed.cat
+# Processed Thu Dec  2 11:50:42 2010 by /home/pgee/bin/makereg -m30 -q.4 -a150 -r70 -z1.4 -x1.1+10 -y+10 -b -w 0,0,10000,10000 ./regions/F2/p11/F2p11R.all.2009.cat
+# Created by starbleed -a 25 -c -r 1.0 -v -b -s 18000 /mnt/DLSNEW/Stacks/2009/F2/p11/R/dlsmake_sat.fits ./regions/work/F2/p11/temp5 ./regions/F2/p11/F2p11R.all.2009.cat, Fri Feb  5 17:05:14 2010
+# Processed 17:05:03 2010-Feb-05 by fiatconcat ./regions/work/F2/p11/temp2 ./regions/work/F2/p11/temp4 > ./regions/work/F2/p11/temp5
+# Comments from file 0: ./regions/work/F2/p11/temp2
+# created by Fri Feb  5 17:04:50 2010 by /afs/soft/bin64/fiatrecolumn 1-4,7,8 ./regions/work/F2/p11/F2p11R.fromold.cat
+# history: 
+# Processed Thu Feb  4 09:18:24 2010 by ./makereg -b -a25 -z+20 -x2.0 -r94 -w0,0,10000,10000 -f ./regions/work/F2/p11/temp1 ./regions/F2/p11/F2p11R.all.2005.cat
+#Processed Thu Oct 20 23:18:26 2005 by /sandbox/pgee/projects/fix/bin/combinereg
+# Processed Thu Oct 20 23:18:26 2005 by /sandbox/pgee/projects/fix/bin/makereg -c white -a25 -r2 -e0 -f F2p11R.make.cat tmpmake3
+# Created by starbleed  starbleed -b -r1 -s15000 /home/DLS/Stacks/2005/F2/p11/R/dlsmake.fits tmpmake2 tmpmake3
+# modified Thu Feb  4 09:18:41 2010 by /afs/soft/bin64/fiatfilter x>1 && x <10000 && y>1 && y<10000 && radius>0 ./regions/work/F2/p11/temp1
+# Comments from file 1: ./regions/work/F2/p11/temp4
+# SE Command line: sex -c sex_defaults/default_calib.sex -CATALOG_NAME catalogs/F2/p11/R/F2p11R.initial -MAG_ZEROPOINT 32.695 -CHECKIMAGE_TYPE SEGMENTATION -CHECKIMAGE_NAME catalogs/F2/p11/R/segmentation.fits -ANALYSIS_THRESH 18400 -DETECT_THRESH 18400 /mnt/DLSNEW/F2/p11/R/dlsmake.fits,/mnt/DLSNEW/F2/p11/R/dlsmake.fits
+# # Default configuration file for SExtractor 2.4.4.cmr.1
+# # EB 2006-03-06
+# #
+#  
+# #-------------------------------- Catalog ------------------------------------
+#  
+# CATALOG_NAME     initial.sexcat       # name of the output catalog
+# CATALOG_TYPE     ASCII_HEAD
+# # WAS ASCII_HEAD_PARAM: change back when available     # "NONE","ASCII_HEAD","ASCII","FITS_1.0"
+#                                 # "FITS_LDAC" or "FITS_TPX"
+#  
+# PARAMETERS_NAME  sex_defaults/default_calib.param
+# 
+# #sex_defaults/default_calib.param  # name of the file containing catalog contents
+#  
+# #------------------------------- Extraction ----------------------------------
+#  
+# DETECT_TYPE      CCD            # "CCD" or "PHOTO"
+# DETECT_MINAREA   6              # minimum number of pixels above threshold
+# THRESH_TYPE      ABSOLUTE       # threshold type: "RELATIVE" (in sigmas)
+#                                 # or "ABSOLUTE" (in ADUs)
+# DETECT_THRESH    18400        # modified by mkcatalog
+# ANALYSIS_THRESH  18400        # modified by mkcatalog
+#  
+# FILTER           Y              # apply filter for detection ("Y" or "N")?
+# FILTER_NAME   sex_defaults/gauss_3.0_7x7_calib.conv  # name of the file containing the filter
+# #FILTER_NAME      default.conv   # name of the file containing the filter
+# FILTER_THRESH                   # Threshold[s] for retina filtering
+#  
+# DEBLEND_NTHRESH  32             # Number of deblending sub-thresholds
+# DEBLEND_MINCONT  0.0001    # Minimum contrast parameter for deblending
+#  
+# CLEAN            N              # Clean spurious detections? (Y or N)?
+# CLEAN_PARAM      2.0            # Cleaning efficiency
+#  
+# MASK_TYPE        CORRECT        # type of detection MASKing: can be one of
+#                                 # "NONE", "BLANK" or "CORRECT"
+#  
+# #-------------------------------- WEIGHTing ----------------------------------
+# 
+# WEIGHT_TYPE      NONE           # type of WEIGHTing: "NONE", "BACKGROUND",
+#                                 # "MAP_RMS", "MAP_VAR" or "MAP_WEIGHT"
+# WEIGHT_IMAGE     fakevar.fits    # weight-map filename
+# WEIGHT_GAIN      N              # modulate gain (E/ADU) with weights? (Y/N)
+# WEIGHT_THRESH                   # weight threshold[s] for bad pixels
+# 
+# #-------------------------------- FLAGging -----------------------------------
+# 
+# FLAG_IMAGE       flag.fits      # filename for an input FLAG-image
+# FLAG_TYPE        OR             # flag pixel combination: "OR", "AND",
+#                                 # "MIN", "MAX", "MOST"
+# 
+# #------------------------------ Photometry -----------------------------------
+#  
+# PHOT_APERTURES 	3.56,7.12,9.49,14.24,18.99,28.48,47.47,94.94,130,160
+# ####27.2,32.1,35.0,38.9,42.8,46.7,50.6,54.5 # MAG_APER aperture diameter(s) in pixels
+# ###PHOT_APERTURES   28.2,37.6,47.0,56.4  # MAG_APER aperture diameter(s) in pixels
+# PHOT_AUTOPARAMS  2.5, 3.5       # MAG_AUTO parameters: <Kron_fact>,<min_radius>
+# PHOT_PETROPARAMS 2.0, 3.5       # MAG_PETRO parameters: <Petrosian_fact>,
+#                                 # <min_radius>
+# PHOT_AUTOAPERS   0.0,0.0        # <estimation>,<measurement> minimum apertures
+#                                 # for MAG_AUTO and MAG_PETRO
+# PHOT_FLUXFRAC    0.5            # flux fraction[s] used for FLUX_RADIUS
+#  
+# SATUR_LEVEL      100000          # level (in ADUs) at which arises saturation
+#  
+# MAG_ZEROPOINT    32.695        # modified by mkcatalog
+# MAG_GAMMA        4.0            # gamma of emulsion (for photographic scans)
+# GAIN             1e10           # detector gain in e-/ADU
+#  
+# #------------------------- Star/Galaxy Separation ----------------------------
+#  
+# SEEING_FWHM      1.2            # stellar FWHM in arcsec
+# STARNNW_NAME     sex_defaults/default_calib.nnw  # Neural-Network_Weight table filename
+#  
+# #------------------------------ Background -----------------------------------
+#  
+# BACK_TYPE        MANUAL          # "AUTO" or "MANUAL"
+# BACK_VALUE       0.0            # Default background value in MANUAL mode
+# BACK_SIZE        64             # Background mesh: <size> or <width>,<height>
+# BACK_FILTERSIZE  3              # Background filter: <size> or <width>,<height>
+#  
+# BACKPHOTO_TYPE   GLOBAL         # can be "GLOBAL" or "LOCAL"
+# BACKPHOTO_THICK  24             # thickness of the background LOCAL annulus
+# BACK_FILTTHRESH  0.0            # Threshold above which the background-
+#                                 # map filter operates
+#  
+# #------------------------------ Check Image ----------------------------------
+#  
+# CHECKIMAGE_TYPE       NONE      # can be one of "NONE", "BACKGROUND",
+#                                 # "MINIBACKGROUND", "-BACKGROUND", "OBJECTS",
+#                                 # "-OBJECTS", "SEGMENTATION", "APERTURES",
+#                                 # or "FILTERED"
+# CHECKIMAGE_NAME  check.fits     # Filename for the check-image
+#  
+# #--------------------- Memory (change with caution!) -------------------------
+#  
+# MEMORY_OBJSTACK  30000          # number of objects in stack
+# MEMORY_PIXSTACK  3000000        # number of pixels in stack
+# MEMORY_BUFSIZE   1024           # number of lines in buffer
+#  
+# #------------------------------- ASSOCiation ---------------------------------
+# 
+# ASSOC_NAME       sky.list       # name of the ASCII file to ASSOCiate
+# ASSOC_PARAMS     2,3,4          # columns of xpos,ypos[,mag]
+# ASSOC_RADIUS     2.0            # cross-matching radius (pixels)
+# ASSOC_TYPE       MAG_SUM        # ASSOCiation method: "FIRST", "NEAREST",
+#                                 # "MEAN", "MAG_MEAN", "SUM", "MAG_SUM",
+#                                 #"MIN" or "MAX"
+# ASSOCSELEC_TYPE  MATCHED        # ASSOC selection type: "ALL", "MATCHED"
+#                                 # or "-MATCHED"
+# 
+# #----------------------------- Miscellaneous ---------------------------------
+#  
+# VERBOSE_TYPE     NORMAL         # can be "QUIET", "NORMAL" or "FULL"
+# 
+# #----------------------------------- Other -----------------------------------
+# 
+# # this was commented out 11-18-08 DMW
+# #FITS_UNSIGNED    N
+# #INTERP_MAXXLAG   16
+# #INTERP_MAXYLAG   16
+# #INTERP_TYPE      ALL
+# #MAMA_CORFLEX     3.3e-5
+# #PSF_NAME         default.psf
+# #PSF_NMAX         11
+# #PSFDISPLAY_TYPE  SPLIT
+# #SOM_NAME         default.som
+# converted from sextractor format Tue Apr 21 10:02:20 PDT 2009
+# via the command: /usr/local/dls/bin/sex2fiat catalogs/F2/p11/R/F2p11R.initial
+# Processed by regfilter /sandbox/pgee/mkcatalog/dual_1.0/F2/p11/R/F2p11R.sat.cat ./regions/work/F2/p11/F2p11R.old.all.reg on 2/6/2010 1:5:3
+# modified Fri Feb  5 17:05:03 2010 by /afs/soft/bin64/fiatfilter isoarea>25 ./regions/work/F2/p11/temp
+# created Fri Feb  5 17:05:03 2010 by 
+# /home/pgee/bin/fiatlist -n- x, ,y, ,ra, ,dec, ,mag, ,mag ./regions/work/F2/p11/F2p11R.missed.cat
+# Processed Thu Dec  2 11:50:42 2010 by /home/pgee/bin/makereg -m30 -q.4 -a150 -r70 -z1.4 -x1.1+10 -y+10 -b -w 0,0,10000,10000 ./regions/F2/p11/F2p11R.all.2009.cat
+# Created by starbleed -a 25 -c -r 1.0 -v -b -s 18000 /mnt/DLSNEW/Stacks/2009/F2/p11/R/dlsmake_sat.fits ./regions/work/F2/p11/temp5 ./regions/F2/p11/F2p11R.all.2009.cat, Fri Feb  5 17:05:14 2010
+# Processed 17:05:03 2010-Feb-05 by fiatconcat ./regions/work/F2/p11/temp2 ./regions/work/F2/p11/temp4 > ./regions/work/F2/p11/temp5
+# Comments from file 0: ./regions/work/F2/p11/temp2
+# created by Fri Feb  5 17:04:50 2010 by /afs/soft/bin64/fiatrecolumn 1-4,7,8 ./regions/work/F2/p11/F2p11R.fromold.cat
+# history: 
+# Processed Thu Feb  4 09:18:24 2010 by ./makereg -b -a25 -z+20 -x2.0 -r94 -w0,0,10000,10000 -f ./regions/work/F2/p11/temp1 ./regions/F2/p11/F2p11R.all.2005.cat
+#Processed Thu Oct 20 23:18:26 2005 by /sandbox/pgee/projects/fix/bin/combinereg
+# Processed Thu Oct 20 23:18:26 2005 by /sandbox/pgee/projects/fix/bin/makereg -c white -a25 -r2 -e0 -f F2p11R.make.cat tmpmake3
+# Created by starbleed  starbleed -b -r1 -s15000 /home/DLS/Stacks/2005/F2/p11/R/dlsmake.fits tmpmake2 tmpmake3
+# modified Thu Feb  4 09:18:41 2010 by /afs/soft/bin64/fiatfilter x>1 && x <10000 && y>1 && y<10000 && radius>0 ./regions/work/F2/p11/temp1
+# Comments from file 1: ./regions/work/F2/p11/temp4
+# SE Command line: sex -c sex_defaults/default_calib.sex -CATALOG_NAME catalogs/F2/p11/R/F2p11R.initial -MAG_ZEROPOINT 32.695 -CHECKIMAGE_TYPE SEGMENTATION -CHECKIMAGE_NAME catalogs/F2/p11/R/segmentation.fits -ANALYSIS_THRESH 18400 -DETECT_THRESH 18400 /mnt/DLSNEW/F2/p11/R/dlsmake.fits,/mnt/DLSNEW/F2/p11/R/dlsmake.fits
+# # Default configuration file for SExtractor 2.4.4.cmr.1
+# # EB 2006-03-06
+# #
+#  
+# #-------------------------------- Catalog ------------------------------------
+#  
+# CATALOG_NAME     initial.sexcat       # name of the output catalog
+# CATALOG_TYPE     ASCII_HEAD
+# # WAS ASCII_HEAD_PARAM: change back when available     # "NONE","ASCII_HEAD","ASCII","FITS_1.0"
+#                                 # "FITS_LDAC" or "FITS_TPX"
+#  
+# PARAMETERS_NAME  sex_defaults/default_calib.param
+# 
+# #sex_defaults/default_calib.param  # name of the file containing catalog contents
+#  
+# #------------------------------- Extraction ----------------------------------
+#  
+# DETECT_TYPE      CCD            # "CCD" or "PHOTO"
+# DETECT_MINAREA   6              # minimum number of pixels above threshold
+# THRESH_TYPE      ABSOLUTE       # threshold type: "RELATIVE" (in sigmas)
+#                                 # or "ABSOLUTE" (in ADUs)
+# DETECT_THRESH    18400        # modified by mkcatalog
+# ANALYSIS_THRESH  18400        # modified by mkcatalog
+#  
+# FILTER           Y              # apply filter for detection ("Y" or "N")?
+# FILTER_NAME   sex_defaults/gauss_3.0_7x7_calib.conv  # name of the file containing the filter
+# #FILTER_NAME      default.conv   # name of the file containing the filter
+# FILTER_THRESH                   # Threshold[s] for retina filtering
+#  
+# DEBLEND_NTHRESH  32             # Number of deblending sub-thresholds
+# DEBLEND_MINCONT  0.0001    # Minimum contrast parameter for deblending
+#  
+# CLEAN            N              # Clean spurious detections? (Y or N)?
+# CLEAN_PARAM      2.0            # Cleaning efficiency
+#  
+# MASK_TYPE        CORRECT        # type of detection MASKing: can be one of
+#                                 # "NONE", "BLANK" or "CORRECT"
+#  
+# #-------------------------------- WEIGHTing ----------------------------------
+# 
+# WEIGHT_TYPE      NONE           # type of WEIGHTing: "NONE", "BACKGROUND",
+#                                 # "MAP_RMS", "MAP_VAR" or "MAP_WEIGHT"
+# WEIGHT_IMAGE     fakevar.fits    # weight-map filename
+# WEIGHT_GAIN      N              # modulate gain (E/ADU) with weights? (Y/N)
+# WEIGHT_THRESH                   # weight threshold[s] for bad pixels
+# 
+# #-------------------------------- FLAGging -----------------------------------
+# 
+# FLAG_IMAGE       flag.fits      # filename for an input FLAG-image
+# FLAG_TYPE        OR             # flag pixel combination: "OR", "AND",
+#                                 # "MIN", "MAX", "MOST"
+# 
+# #------------------------------ Photometry -----------------------------------
+#  
+# PHOT_APERTURES 	3.56,7.12,9.49,14.24,18.99,28.48,47.47,94.94,130,160
+# ####27.2,32.1,35.0,38.9,42.8,46.7,50.6,54.5 # MAG_APER aperture diameter(s) in pixels
+# ###PHOT_APERTURES   28.2,37.6,47.0,56.4  # MAG_APER aperture diameter(s) in pixels
+# PHOT_AUTOPARAMS  2.5, 3.5       # MAG_AUTO parameters: <Kron_fact>,<min_radius>
+# PHOT_PETROPARAMS 2.0, 3.5       # MAG_PETRO parameters: <Petrosian_fact>,
+#                                 # <min_radius>
+# PHOT_AUTOAPERS   0.0,0.0        # <estimation>,<measurement> minimum apertures
+#                                 # for MAG_AUTO and MAG_PETRO
+# PHOT_FLUXFRAC    0.5            # flux fraction[s] used for FLUX_RADIUS
+#  
+# SATUR_LEVEL      100000          # level (in ADUs) at which arises saturation
+#  
+# MAG_ZEROPOINT    32.695        # modified by mkcatalog
+# MAG_GAMMA        4.0            # gamma of emulsion (for photographic scans)
+# GAIN             1e10           # detector gain in e-/ADU
+#  
+# #------------------------- Star/Galaxy Separation ----------------------------
+#  
+# SEEING_FWHM      1.2            # stellar FWHM in arcsec
+# STARNNW_NAME     sex_defaults/default_calib.nnw  # Neural-Network_Weight table filename
+#  
+# #------------------------------ Background -----------------------------------
+#  
+# BACK_TYPE        MANUAL          # "AUTO" or "MANUAL"
+# BACK_VALUE       0.0            # Default background value in MANUAL mode
+# BACK_SIZE        64             # Background mesh: <size> or <width>,<height>
+# BACK_FILTERSIZE  3              # Background filter: <size> or <width>,<height>
+#  
+# BACKPHOTO_TYPE   GLOBAL         # can be "GLOBAL" or "LOCAL"
+# BACKPHOTO_THICK  24             # thickness of the background LOCAL annulus
+# BACK_FILTTHRESH  0.0            # Threshold above which the background-
+#                                 # map filter operates
+#  
+# #------------------------------ Check Image ----------------------------------
+#  
+# CHECKIMAGE_TYPE       NONE      # can be one of "NONE", "BACKGROUND",
+#                                 # "MINIBACKGROUND", "-BACKGROUND", "OBJECTS",
+#                                 # "-OBJECTS", "SEGMENTATION", "APERTURES",
+#                                 # or "FILTERED"
+# CHECKIMAGE_NAME  check.fits     # Filename for the check-image
+#  
+# #--------------------- Memory (change with caution!) -------------------------
+#  
+# MEMORY_OBJSTACK  30000          # number of objects in stack
+# MEMORY_PIXSTACK  3000000        # number of pixels in stack
+# MEMORY_BUFSIZE   1024           # number of lines in buffer
+#  
+# #------------------------------- ASSOCiation ---------------------------------
+# 
+# ASSOC_NAME       sky.list       # name of the ASCII file to ASSOCiate
+# ASSOC_PARAMS     2,3,4          # columns of xpos,ypos[,mag]
+# ASSOC_RADIUS     2.0            # cross-matching radius (pixels)
+# ASSOC_TYPE       MAG_SUM        # ASSOCiation method: "FIRST", "NEAREST",
+#                                 # "MEAN", "MAG_MEAN", "SUM", "MAG_SUM",
+#                                 #"MIN" or "MAX"
+# ASSOCSELEC_TYPE  MATCHED        # ASSOC selection type: "ALL", "MATCHED"
+#                                 # or "-MATCHED"
+# 
+# #----------------------------- Miscellaneous ---------------------------------
+#  
+# VERBOSE_TYPE     NORMAL         # can be "QUIET", "NORMAL" or "FULL"
+# 
+# #----------------------------------- Other -----------------------------------
+# 
+# # this was commented out 11-18-08 DMW
+# #FITS_UNSIGNED    N
+# #INTERP_MAXXLAG   16
+# #INTERP_MAXYLAG   16
+# #INTERP_TYPE      ALL
+# #MAMA_CORFLEX     3.3e-5
+# #PSF_NAME         default.psf
+# #PSF_NMAX         11
+# #PSFDISPLAY_TYPE  SPLIT
+# #SOM_NAME         default.som
+# converted from sextractor format Tue Apr 21 10:02:20 PDT 2009
+# via the command: /usr/local/dls/bin/sex2fiat catalogs/F2/p11/R/F2p11R.initial
+# Processed by regfilter /sandbox/pgee/mkcatalog/dual_1.0/F2/p11/R/F2p11R.sat.cat ./regions/work/F2/p11/F2p11R.old.all.reg on 2/6/2010 1:5:3
+# modified Fri Feb  5 17:05:03 2010 by /afs/soft/bin64/fiatfilter isoarea>25 ./regions/work/F2/p11/temp
+# created Fri Feb  5 17:05:03 2010 by 
+# /home/pgee/bin/fiatlist -n- x, ,y, ,ra, ,dec, ,mag, ,mag ./regions/work/F2/p11/F2p11R.missed.cat
+box(5488.75,7930.50,  34.20, 464.00) # color=green ra=140.41373 dec=30.63168
+circle(5488.75,7902.84,81.20) # color=green pos=(140.41373,30.63168), radius=58, sat=1772, r=13.40, b=14.60, del=(1.5,0.0)
+box(6049.75,7166.50,  28.70, 136.00) # color=green ra=140.47528 dec=30.59172
+circle(6049.75,7161.93,43.40) # color=green pos=(140.47528,30.59172), radius=31, sat=814, r=15.00, b=15.50, del=(1.4,0.0)
+box(4156.50,8498.00,  37.50, 919.00) # color=green ra=140.36906 dec=30.72680
+circle(4156.50,8438.02,93.80) # color=green pos=(140.36906,30.72680), radius=67, sat=2307, r=12.50, b=13.50, del=(-2.5,0.0)
+box(6632.50,9650.00,  29.80, 125.00) # color=green ra=140.26857 dec=30.54949
+circle(6632.50,9656.90,47.60) # color=green pos=(140.26857,30.54949), radius=34, sat=897, r=14.60, b=15.30, del=(-0.3,0.0)
+box(5051.50,3912.00,  27.08, 791.00) # color=green ra=140.74350 dec=30.66321
+circle(5051.50,3929.51,98.00) # color=green pos=(140.74350,30.66321), radius=70, sat=2294, r=12.70, b=13.60, del=(2.4,0.0)
+box(2654.88,5700.50,  21.00, 140.00) # color=green ra=140.59642 dec=30.83397
+circle(2654.88,5701.66,42.00) # color=green pos=(140.59642,30.83397), radius=30, sat=821, r=14.80, b=16.20, del=(1.5,0.0)
+box(6499.50,2166.50,  30.90, 222.00) # color=green ra=140.88881 dec=30.55942
+circle(6499.50,2174.74,64.40) # color=green pos=(140.88881,30.55942), radius=46, sat=1253, r=13.90, b=15.00, del=(-0.9,0.0)
+box(1973.77,2435.00,  24.30, 157.00) # color=green ra=140.86761 dec=30.88254
+circle(1973.77,2439.19,56.00) # color=green pos=(140.86761,30.88254), radius=40, sat=1042, r=14.40, b=15.10, del=(0.8,0.0)
+box(1908.73,4776.50,  36.40, 874.00) # color=green ra=140.67371 dec=30.88717
+circle(1908.73,4770.13,114.80) # color=green pos=(140.67371,30.88717), radius=82, sat=2738, r=12.50, b=13.70, del=(-2.8,0.0)
+box(8826.00,2424.00,  35.30, 389.00) # color=green ra=140.86726 dec=30.39351
+circle(8826.00,2429.38,86.80) # color=green pos=(140.86726,30.39351), radius=62, sat=1848, r=13.10, b=14.90, del=(0.1,0.0)
+box(5929.25,7657.00,  29.80, 257.00) # color=green ra=140.43533 dec=30.59963
+circle(5929.25,7647.50,70.00) # color=green pos=(140.43533,30.59963), radius=50, sat=2469, r=13.30, b=13.70, del=(-2.5,0.0)
+box(6967.98,4599.50,  34.20, 440.00) # color=green ra=140.68810 dec=30.52612
+circle(6967.98,4596.62,86.80) # color=green pos=(140.68810,30.52612), radius=62, sat=1878, r=13.40, b=14.10, del=(-0.1,0.0)
+box(8376.97,3354.00,  30.90, 121.00) # color=green ra=140.79082 dec=30.42582
+circle(8376.97,3354.29,44.80) # color=green pos=(140.79082,30.42582), radius=32, sat=843, r=14.80, b=15.40, del=(-0.1,0.0)
+box(9531.00,2173.50,  30.90, 142.00) # color=green ra=140.88770 dec=30.34305
+circle(9531.00,2177.90,58.80) # color=green pos=(140.88770,30.34305), radius=42, sat=1066, r=14.40, b=15.50, del=(0.0,0.0)
+box(5155.46,1806.50,  29.80, 114.00) # color=green ra=140.91966 dec=30.65513
+circle(5155.46,1807.18,43.40) # color=green pos=(140.91966,30.65513), radius=31, sat=808, r=15.00, b=15.70, del=(-1.8,0.0)
+box(1519.00,1672.50,  33.10, 348.00) # color=green ra=140.92995 dec=30.91462
+circle(1519.00,1695.84,81.20) # color=green pos=(140.92995,30.91462), radius=58, sat=1662, r=13.00, b=13.70, del=(-0.5,0.0)
+box(2831.50,6617.50,  30.69, 200.00) # color=green ra=140.52043 dec=30.82142
+circle(2831.50,6615.66,53.20) # color=green pos=(140.52043,30.82142), radius=38, sat=1078, r=14.50, b=15.20, del=(2.0,0.0)
+box(8158.50, 659.50,  34.20, 324.00) # color=green ra=141.01227 dec=30.44067
+circle(8158.50,680.20,75.60) # color=green pos=(141.01227,30.44067), radius=54, sat=1588, r=13.40, b=13.90, del=(0.8,0.0)
+box(9162.46,1988.50,  36.40, 448.00) # color=green ra=140.90286 dec=30.36962
+circle(9162.46,1998.36,89.60) # color=green pos=(140.90286,30.36962), radius=64, sat=1961, r=13.00, b=13.90, del=(-0.1,0.0)
+box(8107.92,9850.00,  36.40, 327.00) # color=green ra=140.24940 dec=30.44475
+circle(8107.92,9889.63,86.80) # color=green pos=(140.24940,30.44475), radius=62, sat=1918, r=13.10, b=14.00, del=(0.4,0.0)
+box(3661.50,9749.00,  29.80, 109.00) # color=green ra=140.26035 dec=30.76189
+circle(3661.50,9745.68,42.00) # color=green pos=(140.26035,30.76189), radius=30, sat=783, r=15.10, b=15.80, del=(-1.1,0.0)
+box(6453.25,3684.00,  34.20, 557.00) # color=green ra=140.76331 dec=30.56310
+circle(6453.25,3688.71,98.00) # color=green pos=(140.76331,30.56310), radius=70, sat=2141, r=13.10, b=14.60, del=(1.3,0.0)
+box(1977.64,3652.00,  29.80, 215.00) # color=green ra=140.76672 dec=30.88244
+circle(1977.64,3652.17,58.80) # color=green pos=(140.76672,30.88244), radius=42, sat=1155, r=14.00, b=14.90, del=(1.0,0.0)
+box(2720.50,5388.50,  45.20,1274.00) # color=green ra=140.62523 dec=30.82939
+circle(2720.50,5359.44,141.40) # color=green pos=(140.62523,30.82939), radius=101, sat=4123, r=11.30, b=12.20, del=(-0.5,0.0)
+box(4581.25,5452.50,  29.80, 128.00) # color=green ra=140.61694 dec=30.69668
+circle(4581.25,5453.46,43.40) # color=green pos=(140.61694,30.69668), radius=31, sat=836, r=15.10, b=15.80, del=(0.8,0.0)
+box(2584.25,3959.50,  34.20, 512.00) # color=green ra=140.73978 dec=30.83916
+circle(2584.25,3975.03,86.80) # color=green pos=(140.73978,30.83916), radius=62, sat=1897, r=13.10, b=14.00, del=(2.4,0.0)
+box(2654.50,6701.50,  27.63, 248.00) # color=green ra=140.51300 dec=30.83434
+circle(2654.50,6702.94,61.60) # color=green pos=(140.51300,30.83434), radius=44, sat=1261, r=14.20, b=15.80, del=(2.3,0.0)
+box(2236.44,5095.50,  28.70, 118.00) # color=green ra=140.64655 dec=30.86394
+circle(2236.44,5098.21,42.00) # color=green pos=(140.64655,30.86394), radius=30, sat=764, r=15.10, b=16.80, del=(-1.0,0.0)
+box(9510.50,8579.50,  29.80,  94.00) # color=green ra=140.35860 dec=30.34427
+circle(9510.50,8578.48,47.60) # color=green pos=(140.35860,30.34427), radius=34, sat=793, r=15.10, b=16.20, del=(-0.1,0.0)
+box(2495.29,3041.00,  24.30, 127.00) # color=green ra=140.81731 dec=30.84542
+circle(2495.29,3042.97,44.80) # color=green pos=(140.81731,30.84542), radius=32, sat=823, r=14.60, b=15.80, del=(1.9,0.0)
+box(3796.75,4866.50,  29.80, 160.00) # color=green ra=140.66513 dec=30.75286
+circle(3796.75,4870.80,42.00) # color=green pos=(140.66513,30.75286), radius=30, sat=845, r=15.00, b=15.40, del=(-0.4,0.0)
+box(6108.25,3477.00,  19.90, 103.00) # color=green ra=140.78094 dec=30.58799
+circle(6108.25,3475.17,50.40) # color=green pos=(140.78094,30.58799), radius=36, sat=848, r=14.50, b=16.40, del=(2.5,0.0)
+box(9631.29,7306.00,  23.20, 121.00) # color=green ra=140.46434 dec=30.33603
+circle(9631.29,7300.62,50.40) # color=green pos=(140.46434,30.33603), radius=36, sat=915, r=14.80, b=15.50, del=(1.7,0.0)
+box( 140.25,9505.00,  45.20,1017.00) # color=green ra=140.24837 dec=31.01275
+circle(140.25,9880.85,135.80) # color=green pos=(140.24837,31.01275), radius=97, sat=3757, r=11.00, b=12.00, del=(-1.4,0.0)
+box(7760.25,4736.50,  41.90,1056.00) # color=green ra=140.67966 dec=30.46948
+circle(7760.25,4697.81,135.80) # color=green pos=(140.67966,30.46948), radius=97, sat=3603, r=11.60, b=12.30, del=(0.3,0.0)
+box(8044.75,4011.50,  29.80, 114.00) # color=green ra=140.73668 dec=30.44900
+circle(8044.75,4008.97,42.00) # color=green pos=(140.73668,30.44900), radius=30, sat=778, r=15.00, b=15.90, del=(-2.6,0.0)
+box(5955.00,4035.50,  27.29, 486.00) # color=green ra=140.73340 dec=30.59875
+circle(5955.00,4049.46,86.80) # color=green pos=(140.73340,30.59875), radius=62, sat=1885, r=13.30, b=13.90, del=(2.6,0.0)
+box(5107.50,2288.00,  28.70, 117.00) # color=green ra=140.87982 dec=30.65878
+circle(5107.50,2286.57,43.40) # color=green pos=(140.87982,30.65878), radius=31, sat=794, r=15.00, b=15.80, del=(-0.1,0.0)
+box(2407.15,9808.00,  34.20, 411.00) # color=green ra=140.25116 dec=30.85102
+circle(2407.15,9851.53,81.20) # color=green pos=(140.25116,30.85102), radius=58, sat=1770, r=13.30, b=14.10, del=(-1.7,0.0)
+box(2750.50,7821.50,  34.20, 348.00) # color=green ra=140.42117 dec=30.82763
+circle(2750.50,7813.17,72.80) # color=green pos=(140.42117,30.82763), radius=52, sat=1567, r=13.50, b=14.90, del=(2.9,0.0)
+box(9864.50,2041.00,  32.00, 159.00) # color=green ra=140.89905 dec=30.31931
+circle(9864.50,2047.01,67.20) # color=green pos=(140.89905,30.31931), radius=48, sat=1248, r=14.30, b=15.50, del=(-2.5,0.0)
+box(9471.21,2948.50,  29.80, 102.00) # color=green ra=140.82346 dec=30.34750
+circle(9471.21,2951.06,50.40) # color=green pos=(140.82346,30.34750), radius=36, sat=854, r=14.90, b=16.80, del=(-0.4,0.0)
+box(3122.75, 245.00,  29.80, 123.00) # color=green ra=141.04915 dec=30.80000
+circle(3122.75,252.73,43.40) # color=green pos=(141.04915,30.80000), radius=31, sat=830, r=14.60, b=15.80, del=(-1.9,0.0)
+box(8870.50,2941.50,  32.00, 236.00) # color=green ra=140.82568 dec=30.38987
+circle(8870.50,2936.96,70.00) # color=green pos=(140.82568,30.38987), radius=50, sat=1389, r=14.30, b=15.00, del=(-0.2,0.0)
+box(3921.25,6064.00,  32.00, 275.00) # color=green ra=140.56696 dec=30.74354
+circle(3921.25,6054.94,61.60) # color=green pos=(140.56696,30.74354), radius=44, sat=1305, r=14.00, b=15.00, del=(-3.3,0.0)
+circle(5591.25,5286.37,56.00) # color=green pos=(140.61401,30.62470), radius=40, sat=1113, r=11.40, b=13.00, del=(0.3,0.0)
+box(5591.00,5637.50,  40.80,1312.00) # color=green ra=140.61401 dec=30.62470
+circle(5591.00,5488.87,147.00) # color=green pos=(140.61401,30.62470), radius=105, sat=4047, r=11.40, b=13.00, del=(0.1,0.0)
+box( 429.27,9396.50,  36.40, 548.00) # color=green ra=140.29259 dec=30.99227
+circle(429.27,9346.95,75.60) # color=green pos=(140.29259,30.99227), radius=54, sat=1746, r=13.10, b=14.20, del=(-1.6,0.0)
+box(7506.75,3796.00,  29.54, 245.00) # color=green ra=140.75410 dec=30.48779
+circle(7506.75,3796.95,67.20) # color=green pos=(140.75410,30.48779), radius=48, sat=1333, r=14.00, b=15.80, del=(-1.0,0.0)
+box(4324.75,5086.50,  33.10, 376.00) # color=green ra=140.64725 dec=30.71494
+circle(4324.75,5088.46,70.00) # color=green pos=(140.64725,30.71494), radius=50, sat=1538, r=13.70, b=14.40, del=(1.0,0.0)
+box(3647.38,5611.00,  27.60, 129.00) # color=green ra=140.60374 dec=30.76304
+circle(3647.38,5612.07,47.60) # color=green pos=(140.60374,30.76304), radius=34, sat=870, r=15.10, b=16.40, del=(-2.8,0.0)
+box(7035.75,8914.50,  37.50, 840.00) # color=green ra=140.33649 dec=30.52113
+circle(7035.75,8838.23,102.20) # color=green pos=(140.33649,30.52113), radius=73, sat=2522, r=12.30, b=13.20, del=(2.5,0.0)
+box(3444.59,8099.50,  35.30, 576.00) # color=green ra=140.39932 dec=30.77708
+circle(3444.59,8078.95,93.80) # color=green pos=(140.39932,30.77708), radius=67, sat=2092, r=13.00, b=14.70, del=(-0.9,0.0)
+box(9423.50,7464.00,  35.30, 563.00) # color=green ra=140.45351 dec=30.35066
+circle(9423.50,7429.44,102.20) # color=green pos=(140.45351,30.35066), radius=73, sat=2278, r=12.90, b=14.10, del=(-0.9,0.0)
+box(7087.37,6030.50,  29.80, 178.00) # color=green ra=140.56927 dec=30.51762
+circle(7087.37,6029.45,47.60) # color=green pos=(140.56927,30.51762), radius=34, sat=948, r=14.90, b=15.90, del=(-1.4,0.0)
+box(9599.25,1303.50,  36.40, 390.00) # color=green ra=140.96057 dec=30.33805
+circle(9599.25,1296.48,98.00) # color=green pos=(140.96057,30.33805), radius=70, sat=2093, r=13.00, b=14.00, del=(-0.6,0.0)
+box(9530.50,4795.00,  38.60, 893.00) # color=green ra=140.67059 dec=30.34350
+circle(9530.50,4806.69,119.00) # color=green pos=(140.67059,30.34350), radius=85, sat=2905, r=12.50, b=13.90, del=(0.1,0.0)
+box(6311.34,4089.00,  28.70,1619.00) # color=green ra=140.71245 dec=30.57282
+circle(6311.34,4302.10,147.00) # color=green pos=(140.71245,30.57282), radius=105, sat=3953, r=11.00, b=12.10, del=(-4.4,0.0)
+box(4280.37, 685.00,  38.60, 783.00) # color=green ra=141.00691 dec=30.71777
+circle(4280.37,757.11,102.20) # color=green pos=(141.00691,30.71777), radius=73, sat=2453, r=12.70, b=14.60, del=(-0.8,0.0)
+box(7889.00,3929.00,  35.30, 533.00) # color=green ra=140.74402 dec=30.46031
+circle(7889.00,3920.10,89.60) # color=green pos=(140.74402,30.46031), radius=64, sat=2015, r=13.10, b=14.00, del=(-0.5,0.0)
+box(1488.50,8182.00,  44.10,2069.00) # color=green ra=140.39069 dec=30.91664
+circle(1488.50,8173.24,131.60) # color=green pos=(140.39069,30.91664), radius=94, sat=3505, r=11.70, b=13.00, del=(-2.7,0.0)
+box(6124.54,6919.50,  34.20, 666.00) # color=green ra=140.49576 dec=30.58621
+circle(6124.54,6915.22,89.60) # color=green pos=(140.49576,30.58621), radius=64, sat=2034, r=13.10, b=13.90, del=(-0.6,0.0)
+box( 315.25,4504.50,  36.40, 760.00) # color=green ra=140.69119 dec=31.00097
+circle(315.25,4560.82,98.00) # color=green pos=(140.69119,31.00097), radius=70, sat=2353, r=12.60, b=13.30, del=(-0.9,0.0)
+box(9741.50, 418.50,  34.20, 278.00) # color=green ra=141.03178 dec=30.32781
+circle(9741.50,438.38,72.80) # color=green pos=(141.03178,30.32781), radius=52, sat=1497, r=13.50, b=14.40, del=(-0.3,0.0)
+box(1293.98,8356.50,  32.00, 192.00) # color=green ra=140.37668 dec=30.93070
+circle(1293.98,8346.35,53.20) # color=green pos=(140.37668,30.93070), radius=38, sat=1068, r=14.30, b=16.40, del=(-0.5,0.0)
+box(1341.00,7596.50,  39.70,1004.00) # color=green ra=140.43907 dec=30.92788
+circle(1341.00,7581.63,110.60) # color=green pos=(140.43907,30.92788), radius=79, sat=2736, r=12.50, b=13.50, del=(-0.5,0.0)
+box(9083.75,6673.50,  32.00, 266.00) # color=green ra=140.51704 dec=30.37520
+circle(9083.75,6662.37,61.60) # color=green pos=(140.51704,30.37520), radius=44, sat=1274, r=14.20, b=14.70, del=(1.7,0.0)
+box(8878.17,4804.50,  28.70, 106.00) # color=green ra=140.67050 dec=30.38990
+circle(8878.17,4806.39,42.00) # color=green pos=(140.67050,30.38990), radius=30, sat=748, r=15.30, b=16.10, del=(0.0,0.0)
+box( 558.74,3011.00,  35.30, 613.00) # color=green ra=140.81783 dec=30.98386
+circle(558.74,3046.22,89.60) # color=green pos=(140.81783,30.98386), radius=64, sat=2014, r=12.90, b=13.60, del=(-0.7,0.0)
+box(1572.50,2751.00,  29.80, 137.00) # color=green ra=140.84160 dec=30.91124
+circle(1572.50,2752.45,50.40) # color=green pos=(140.84160,30.91124), radius=36, sat=913, r=14.50, b=15.30, del=(-0.2,0.0)
+box(4315.50,3775.00,  33.10, 381.00) # color=green ra=140.75610 dec=30.71537
+circle(4315.50,3778.56,67.20) # color=green pos=(140.75610,30.71537), radius=48, sat=1456, r=13.90, b=14.90, del=(-2.4,0.0)
+box(5441.40,1652.00,  23.20, 111.00) # color=green ra=140.93205 dec=30.63475
+circle(5441.40,1655.74,44.80) # color=green pos=(140.93205,30.63475), radius=32, sat=810, r=15.10, b=15.80, del=(-1.3,0.0)
+box(4012.00,8564.00,  37.50, 781.00) # color=green ra=140.36057 dec=30.73715
+circle(4012.00,8539.94,86.80) # color=green pos=(140.36057,30.73715), radius=62, sat=2118, r=12.90, b=13.70, del=(-0.3,0.0)
+box(9693.50,4689.00,  27.60,  95.00) # color=green ra=140.68024 dec=30.33159
+circle(9693.50,4689.81,44.80) # color=green pos=(140.68024,30.33159), radius=32, sat=735, r=15.30, b=16.10, del=(0.6,0.0)
+box(8311.00,7070.50,  36.40, 702.00) # color=green ra=140.48352 dec=30.43001
+circle(8311.00,7066.17,93.80) # color=green pos=(140.48352,30.43001), radius=67, sat=2198, r=12.70, b=13.90, del=(-1.1,0.0)
+box(7323.00,2279.50,  28.70, 114.00) # color=green ra=140.87975 dec=30.50066
+circle(7323.00,2282.35,47.60) # color=green pos=(140.87975,30.50066), radius=34, sat=835, r=14.80, b=15.50, del=(0.5,0.0)
+box(5797.75,4192.00,  28.33, 369.00) # color=green ra=140.72189 dec=30.60970
+circle(5797.75,4195.05,78.40) # color=green pos=(140.72189,30.60970), radius=56, sat=1588, r=12.70, b=14.10, del=(-0.9,0.0)
+box(4964.50,7332.00,  29.80, 159.00) # color=green ra=140.46109 dec=30.66937
+circle(4964.50,7331.53,47.60) # color=green pos=(140.46109,30.66937), radius=34, sat=932, r=14.60, b=15.50, del=(-1.2,0.0)
+box(1518.50,8916.00,  29.80, 121.00) # color=green ra=140.32828 dec=30.91486
+circle(1518.50,8923.66,42.00) # color=green pos=(140.32828,30.91486), radius=30, sat=775, r=15.00, b=15.70, del=(0.2,0.0)
+box(5453.50,2714.00,  29.80, 147.00) # color=green ra=140.84406 dec=30.63405
+circle(5453.50,2716.61,50.40) # color=green pos=(140.84406,30.63405), radius=36, sat=953, r=14.50, b=15.50, del=(-1.0,0.0)
+box(7247.50, 915.00,  29.80, 129.00) # color=green ra=140.99240 dec=30.50585
+circle(7247.50,922.74,50.40) # color=green pos=(140.99240,30.50585), radius=36, sat=928, r=14.80, b=15.70, del=(0.3,0.0)
+box(3416.25,5343.50,  36.40, 666.00) # color=green ra=140.62762 dec=30.77984
+circle(3416.25,5326.09,93.80) # color=green pos=(140.62762,30.77984), radius=67, sat=2233, r=13.00, b=13.70, del=(0.8,0.0)
+box(3882.50,  39.26,  29.80,  80.49) # color=green ra=141.06886 dec=30.74581
+circle(3882.50,12.51,47.60) # color=green pos=(141.06886,30.74581), radius=34, sat=657, r=14.60, b=15.50, del=(-0.6,0.0)
+box(1185.25,9625.00,  36.40, 629.00) # color=green ra=140.26193 dec=30.93839
+circle(1185.25,9717.73,93.80) # color=green pos=(140.26193,30.93839), radius=67, sat=2382, r=12.90, b=13.70, del=(-0.7,0.0)
+box(2348.22, 873.50,  35.30, 530.00) # color=green ra=140.99319 dec=30.85539
+circle(2348.22,928.26,93.80) # color=green pos=(140.99319,30.85539), radius=67, sat=2060, r=13.00, b=13.70, del=(-0.6,0.0)
+box(7631.00,6116.50,  30.90, 156.00) # color=green ra=140.56218 dec=30.47871
+circle(7631.00,6115.61,47.60) # color=green pos=(140.56218,30.47871), radius=34, sat=927, r=15.00, b=15.80, del=(-1.1,0.0)
+box(3078.50,6949.50,  37.50, 830.00) # color=green ra=140.49367 dec=30.80384
+circle(3078.50,6936.06,102.20) # color=green pos=(140.49367,30.80384), radius=73, sat=2383, r=12.70, b=13.90, del=(0.2,0.0)
+box(7654.25,8473.00,  32.00, 309.00) # color=green ra=140.36774 dec=30.47661
+circle(7654.25,8462.77,70.00) # color=green pos=(140.36774,30.47661), radius=50, sat=1447, r=13.70, b=14.60, del=(-2.5,0.0)
+box(8449.79,9953.00,  30.90, 101.00) # color=green ra=140.24419 dec=30.41972
+circle(8449.79,9957.43,47.60) # color=green pos=(140.24419,30.41972), radius=34, sat=842, r=15.00, b=15.90, del=(-0.1,0.0)
+box( 177.75,3780.50,  33.10, 260.00) # color=green ra=140.75566 dec=31.01108
+circle(177.75,3789.39,56.00) # color=green pos=(140.75566,31.01108), radius=40, sat=1233, r=13.80, b=15.30, del=(1.8,0.0)
+circle(4280.00,1015.66,42.00) # color=green pos=(140.98544,30.71768), radius=30, sat=573, r=17.80, b=19.40, del=(-0.4,0.0)
+box(4551.50,5222.00,  32.18, 207.00) # color=green ra=140.63609 dec=30.69850
+circle(4551.50,5222.55,61.60) # color=green pos=(140.63609,30.69850), radius=44, sat=1267, r=14.20, b=15.30, del=(-2.5,0.0)
+box( 297.00,2642.00,  30.90, 221.00) # color=green ra=140.85114 dec=31.00224
+circle(297.00,2641.76,56.00) # color=green pos=(140.85114,31.00224), radius=40, sat=1123, r=14.00, b=15.50, del=(-0.3,0.0)
+box(9840.17,3509.50,  23.96, 372.00) # color=green ra=140.77715 dec=30.32157
+circle(9840.17,3518.06,93.80) # color=green pos=(140.77715,30.32157), radius=67, sat=1985, r=13.10, b=14.00, del=(3.5,0.0)
+box(1322.08,6222.50,  32.00, 200.00) # color=green ra=140.55247 dec=30.92916
+circle(1322.08,6226.90,53.20) # color=green pos=(140.55247,30.92916), radius=38, sat=1086, r=14.50, b=15.70, del=(-0.8,0.0)
+box(4276.00,7680.00,  30.90, 171.00) # color=green ra=140.43236 dec=30.71825
+circle(4276.00,7676.10,50.40) # color=green pos=(140.43236,30.71825), radius=36, sat=983, r=14.60, b=15.50, del=(-0.0,0.0)
+box(3953.75,1916.50,  30.90, 208.00) # color=green ra=140.91025 dec=30.74127
+circle(3953.75,1921.92,53.20) # color=green pos=(140.91025,30.74127), radius=38, sat=1086, r=14.50, b=15.90, del=(1.5,0.0)
+box(9767.00, 119.50,  35.30, 264.00) # color=green ra=141.05766 dec=30.32569
+circle(9767.00,126.23,70.00) # color=green pos=(141.05766,30.32569), radius=50, sat=1512, r=13.40, b=14.40, del=(-0.3,0.0)
+box(6609.60,3659.50,  29.80, 144.00) # color=green ra=140.76607 dec=30.55161
+circle(6609.60,3660.95,47.60) # color=green pos=(140.76607,30.55161), radius=34, sat=896, r=14.60, b=16.30, del=(-0.5,0.0)
+box(4065.75,4717.00,  32.00, 285.00) # color=green ra=140.67863 dec=30.73378
+circle(4065.75,4714.34,61.60) # color=green pos=(140.67863,30.73378), radius=44, sat=1295, r=14.00, b=14.90, del=(0.4,0.0)
+box(2519.50,4656.50,  47.40,1286.00) # color=green ra=140.67453 dec=30.84387
+circle(2519.50,4760.20,175.00) # color=green pos=(140.67453,30.84387), radius=125, sat=5539, r= 9.80, b=11.50, del=(-0.2,0.0)
+box(8116.50,8251.50,  29.80, 150.00) # color=green ra=140.38528 dec=30.44377
+circle(8116.50,8252.20,47.60) # color=green pos=(140.38528,30.44377), radius=34, sat=905, r=14.80, b=15.30, del=(-0.5,0.0)
+box(5298.50, 113.50,  38.60, 252.00) # color=green ra=141.06458 dec=30.64459
+circle(5298.50,58.86,84.00) # color=green pos=(141.06458,30.64459), radius=60, sat=2068, r=13.00, b=14.10, del=(-1.2,0.0)
+box(6447.41,2922.50,  33.10, 350.00) # color=green ra=140.82607 dec=30.56317
+circle(6447.41,2931.58,78.40) # color=green pos=(140.82607,30.56317), radius=56, sat=1613, r=13.50, b=14.00, del=(-1.2,0.0)
+circle(1486.25,7838.71,43.40) # color=green pos=(140.41856,30.91734), radius=31, sat=916, r=15.10, b=16.90, del=(-2.6,0.0)
+box(3094.25,3129.50,  28.11, 724.00) # color=green ra=140.80827 dec=30.80288
+circle(3094.25,3145.95,93.80) # color=green pos=(140.80827,30.80288), radius=67, sat=2185, r=12.60, b=14.20, del=(-1.2,0.0)
+box(1238.89,7116.50,  23.88, 172.00) # color=green ra=140.47856 dec=30.93488
+circle(1238.89,7114.98,47.60) # color=green pos=(140.47856,30.93488), radius=34, sat=947, r=14.60, b=15.50, del=(-2.5,0.0)
+box(9001.50,7673.00,  34.20, 547.00) # color=green ra=140.43488 dec=30.38079
+circle(9001.50,7655.00,84.00) # color=green pos=(140.43488,30.38079), radius=60, sat=1865, r=13.10, b=14.00, del=(-0.3,0.0)
+box(3812.75,2989.50,  28.85, 186.00) # color=green ra=140.82146 dec=30.75154
+circle(3812.75,2990.91,50.40) # color=green pos=(140.82146,30.75154), radius=36, sat=1006, r=14.80, b=15.70, del=(2.9,0.0)
+box(7947.15,1785.00,  33.10, 237.00) # color=green ra=140.92056 dec=30.45601
+circle(7947.15,1788.35,70.00) # color=green pos=(140.92056,30.45601), radius=50, sat=1397, r=13.90, b=14.20, del=(-1.1,0.0)
+box(3705.75,1752.00,  32.00, 209.00) # color=green ra=140.92400 dec=30.75873
+circle(3705.75,1756.94,56.00) # color=green pos=(140.92400,30.75873), radius=40, sat=1128, r=14.50, b=15.00, del=(0.8,0.0)
+box(3576.56,4870.50,  26.50, 638.00) # color=green ra=140.66428 dec=30.76804
+circle(3576.56,4882.47,86.80) # color=green pos=(140.66428,30.76804), radius=62, sat=2062, r=13.30, b=14.00, del=(-4.1,0.0)
+box(8061.89,6185.50,  23.20, 132.00) # color=green ra=140.55646 dec=30.44788
+circle(8061.89,6185.53,44.80) # color=green pos=(140.55646,30.44788), radius=32, sat=829, r=15.00, b=16.00, del=(-2.9,0.0)
+box(4672.20,4803.50,  21.00, 136.00) # color=green ra=140.67123 dec=30.69058
+circle(4672.20,4805.76,47.60) # color=green pos=(140.67123,30.69058), radius=34, sat=915, r=15.00, b=16.60, del=(1.1,0.0)
+box(5070.10,9149.50,  32.00, 154.00) # color=green ra=140.31024 dec=30.66095
+circle(5070.10,9148.02,53.20) # color=green pos=(140.31024,30.66095), radius=38, sat=1288, r=14.20, b=15.50, del=(0.3,0.0)
+box(4417.00,9835.00,  35.30, 357.00) # color=green ra=140.25092 dec=30.70769
+circle(4417.00,9864.70,70.00) # color=green pos=(140.25092,30.70769), radius=50, sat=1595, r=13.70, b=14.50, del=(-0.2,0.0)
+box(6528.47,7443.00,  23.20, 197.00) # color=green ra=140.45248 dec=30.55690
+circle(6528.47,7442.61,58.80) # color=green pos=(140.45248,30.55690), radius=42, sat=1128, r=14.40, b=16.50, del=(-1.6,0.0)
+box( 903.50,3156.00,  36.40, 995.00) # color=green ra=140.80455 dec=30.95883
+circle(903.50,3198.55,106.40) # color=green pos=(140.80455,30.95883), radius=76, sat=2506, r=12.50, b=13.20, del=(-0.7,0.0)
+box(8950.00, 408.00,  37.50, 535.00) # color=green ra=141.03314 dec=30.38414
+circle(8950.00,425.48,93.80) # color=green pos=(141.03314,30.38414), radius=67, sat=2167, r=13.00, b=13.60, del=(0.6,0.0)
+box(9160.50,4232.50,  32.00, 172.00) # color=green ra=140.71825 dec=30.36959
+circle(9160.50,4231.50,50.40) # color=green pos=(140.71825,30.36959), radius=36, sat=1029, r=14.50, b=15.20, del=(-0.1,0.0)
+box(4841.54,3044.50,  24.54, 830.00) # color=green ra=140.81622 dec=30.67759
+circle(4841.54,3052.77,102.20) # color=green pos=(140.81622,30.67759), radius=73, sat=2372, r=12.70, b=13.30, del=(-4.8,0.0)
+box(6159.25,8762.50,  43.00,1678.00) # color=green ra=140.35390 dec=30.58375
+circle(6159.25,8626.00,147.00) # color=green pos=(140.35390,30.58375), radius=105, sat=4188, r=11.00, b=12.10, del=(3.6,0.0)
+box(9910.61,2712.50,  32.00, 180.00) # color=green ra=140.84364 dec=30.31647
+circle(9910.61,2717.92,75.60) # color=green pos=(140.84364,30.31647), radius=54, sat=1830, r=12.90, b=14.20, del=(-0.0,0.0)
+box(5172.58,9673.50,  41.90, 680.00) # color=green ra=140.25339 dec=30.65364
+circle(5172.58,9834.59,131.60) # color=green pos=(140.25339,30.65364), radius=94, sat=3576, r=11.60, b=12.80, del=(0.7,0.0)
+box(7537.50,5123.50,  31.04, 228.00) # color=green ra=140.64404 dec=30.48551
+circle(7537.50,5126.73,61.60) # color=green pos=(140.64404,30.48551), radius=44, sat=1244, r=14.20, b=15.10, del=(-0.3,0.0)
+box(9720.50,7834.50,  41.90,1008.00) # color=green ra=140.42387 dec=30.32907
+circle(9720.50,7794.20,127.40) # color=green pos=(140.42387,30.32907), radius=91, sat=3337, r=11.90, b=12.80, del=(1.0,0.0)
+box(3282.50,2653.00,  29.80, 139.00) # color=green ra=140.84880 dec=30.79003
+circle(3282.50,2654.35,44.80) # color=green pos=(140.84880,30.79003), radius=32, sat=851, r=14.80, b=16.10, del=(1.1,0.0)
+box(1342.50,4895.00,  34.20, 515.00) # color=green ra=140.66290 dec=30.92778
+circle(1342.50,4900.90,84.00) # color=green pos=(140.66290,30.92778), radius=60, sat=1901, r=13.10, b=14.00, del=(-0.2,0.0)
+box(5227.17,5291.50,  27.09, 310.00) # color=green ra=140.63191 dec=30.65074
+circle(5227.17,5271.92,64.40) # color=green pos=(140.63191,30.65074), radius=46, sat=1380, r=13.90, b=14.60, del=(3.8,0.0)
+box( 873.85,3559.50,  23.20, 226.00) # color=green ra=140.77399 dec=30.96110
+circle(873.85,3559.68,56.00) # color=green pos=(140.77399,30.96110), radius=40, sat=1116, r=14.00, b=14.90, del=(-2.4,0.0)
+box(1789.50,  79.50,  34.20, 184.00) # color=green ra=141.06631 dec=30.89621
+circle(1789.50,36.98,56.00) # color=green pos=(141.06631,30.89621), radius=40, sat=1254, r=13.50, b=15.40, del=(-1.6,0.0)
+box(8723.62,6728.50,  28.70, 122.00) # color=green ra=140.51123 dec=30.40076
+circle(8723.62,6731.65,43.40) # color=green pos=(140.51123,30.40076), radius=31, sat=798, r=15.00, b=16.10, del=(-0.1,0.0)
+box(5968.50,5141.50,  30.90, 244.00) # color=green ra=140.64278 dec=30.59750
+circle(5968.50,5142.32,61.60) # color=green pos=(140.64278,30.59750), radius=44, sat=1267, r=14.20, b=15.30, del=(0.2,0.0)
+box(2980.00,4550.50,  33.10, 392.00) # color=green ra=140.69145 dec=30.81098
+circle(2980.00,4556.55,70.00) # color=green pos=(140.69145,30.81098), radius=50, sat=1518, r=13.70, b=14.50, del=(-0.7,0.0)
+box(8696.00,8544.00,  30.90, 231.00) # color=green ra=140.36205 dec=30.40246
+circle(8696.00,8536.79,61.60) # color=green pos=(140.36205,30.40246), radius=44, sat=1249, r=14.20, b=15.30, del=(-0.6,0.0)
+box(7307.50,9836.50,  29.80,  86.00) # color=green ra=140.25371 dec=30.50134
+circle(7307.50,9838.55,42.00) # color=green pos=(140.25371,30.50134), radius=30, sat=727, r=15.00, b=15.90, del=(-0.3,0.0)
+box(3866.89,5382.50,  26.58, 356.00) # color=green ra=140.62350 dec=30.74725
+circle(3866.89,5374.12,75.60) # color=green pos=(140.62350,30.74725), radius=54, sat=1719, r=13.50, b=14.20, del=(-4.1,0.0)
+box(7110.68,6231.00,  37.50,1191.00) # color=green ra=140.55142 dec=30.51594
+circle(7110.68,6245.69,110.60) # color=green pos=(140.55142,30.51594), radius=79, sat=2754, r=12.30, b=13.60, del=(-1.5,0.0)
+box(4688.00,1651.00,  41.90,1555.00) # color=green ra=140.92641 dec=30.68959
+circle(4688.00,1731.52,123.20) # color=green pos=(140.92641,30.68959), radius=88, sat=3240, r=11.60, b=13.30, del=(-0.4,0.0)
+box(9219.50,2433.00,  29.80, 107.00) # color=green ra=140.86694 dec=30.36519
+circle(9219.50,2433.37,47.60) # color=green pos=(140.86694,30.36519), radius=34, sat=849, r=15.10, b=15.50, del=(-0.3,0.0)
+box(1146.56,9366.00,  28.70, 655.00) # color=green ra=140.29048 dec=30.94118
+circle(1146.56,9380.74,78.40) # color=green pos=(140.29048,30.94118), radius=56, sat=1970, r=12.90, b=14.10, del=(2.2,0.0)
+box(2940.15,2286.50,  38.92,1684.00) # color=green ra=140.87357 dec=30.81411
+circle(2940.15,2366.26,131.60) # color=green pos=(140.87357,30.81411), radius=94, sat=3641, r=11.70, b=12.80, del=(3.5,0.0)
+box(5301.50,3395.00,  38.60,1303.00) # color=green ra=140.78619 dec=30.64497
+circle(5301.50,3413.91,123.20) # color=green pos=(140.78619,30.64497), radius=88, sat=3033, r=12.00, b=13.70, del=(-1.0,0.0)
+box(9532.00,  62.50,  26.50, 150.00) # color=green ra=141.06651 dec=30.34256
+circle(9532.00,20.05,56.00) # color=green pos=(141.06651,30.34256), radius=40, sat=771, r=15.11, b=15.11, del=(0.9,0.0)
+box(3286.00,3056.00,  27.17, 425.00) # color=green ra=140.81599 dec=30.78905
+circle(3286.00,3057.61,81.20) # color=green pos=(140.81599,30.78905), radius=58, sat=1729, r=13.36, b=13.36, del=(1.7,0.0)
+box(9375.50,9907.00,  29.80,  87.00) # color=green ra=140.24876 dec=30.35361
+circle(9375.50,9905.50,50.40) # color=green pos=(140.24876,30.35361), radius=36, sat=726, r=15.96, b=15.96, del=(-0.9,0.0)
