@@ -10,12 +10,13 @@ s.a,
 s.b, 
 p.processflags, 
 z.z_b, 
-s.flux_radius, 
+s.flux_radius,
+s.status,
 d.Dlsqc_prob
 FROM
 RC1Stage.PhotoObjAll AS p, 
-RC1c_public.Dlsqc AS d, 
-RC1c_public.Bpz AS z, 
+RC1c_public2.Dlsqc AS d, 
+RC1c_public2.Bpz AS z, 
 RC1Stage.Shapes2 AS s 
 WHERE
 d.objid=s.objid
