@@ -218,8 +218,8 @@ AND p.r is NOT NULL
 AND p.b is NOT NULL
 AND p.v is NOT NULL
 AND p.z is NOT NULL
-AND p.Rdered < 24.5
-AND p.Rdered > 21
+AND p.r < 24.5
+AND p.r > 21
 # The R band probability that object is a point source `d.Dlsqc_prob`
 AND d.Dlsqc_prob<0.1
 # Shape cut
