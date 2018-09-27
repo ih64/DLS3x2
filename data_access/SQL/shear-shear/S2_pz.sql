@@ -223,7 +223,7 @@ AND p.r > 21
 # The R band probability that object is a point source `d.Dlsqc_prob`
 AND d.Dlsqc_prob<0.1
 # Shape cut
-AND s.b>0.6
+AND s.b>0.4
 AND z.z_b < .8
 AND z.z_b > .6
 AND s.status = 1
