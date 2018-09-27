@@ -204,9 +204,9 @@ SUM(b.c200)
 FROM
 RC1Stage.PhotoObjAll AS p, 
 RC1Stage.Dlsqc AS d, 
-RC1c_public2.Bpz AS z, 
+RC1c_public.Bpz AS z, 
 RC1Stage.Shapes2 AS s,
-RC1c_public2.Probs as b 
+RC1c_public.Probs as b 
 WHERE
 d.objid=s.objid
 AND p.objid = s.objid
@@ -218,22 +218,16 @@ AND p.r is NOT NULL
 AND p.b is NOT NULL
 AND p.v is NOT NULL
 AND p.z is NOT NULL
-AND p.r < 24.5
-AND p.r > 21
+AND p.Rdered < 24.5
+AND p.Rdered > 21
 # The R band probability that object is a point source `d.Dlsqc_prob`
 AND d.Dlsqc_prob<0.1
 # Shape cut
-AND s.b>0.4
-AND z.z_b < 1
-AND z.z_b > .8
+AND s.b > 0.4
+AND s.de < .3
 AND s.status = 1
-# Ellipticity error cut
-AND s.de<0.3
 AND SQRT( POW(s.e1,2) + POW(s.e2,2) ) < .6
-# F5 bound cut F5 is a 2x2 sq. degree field centered at RA=13:59:20, DEC=-11:03:00
-# Due to ambiguous info on DLS website and James 2015 cosmic shear paper about the location
-# of the field I will use the SQL keyword instead
-# AND p.alpha between 208.7 and 210.85
-# AND p.delta between -12.1 and -10.1;
-#AND p.subfield LIKE 'F2%'
-#GROUP BY p.subfield 
+# Photo z cut
+AND z.z_b < 1
+AND z.z_b > .7
+AND z.odds > .8
