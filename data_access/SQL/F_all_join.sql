@@ -22,13 +22,10 @@ s.status,
 z.z_b, 
 z.odds
 FROM
-RC1c_public.PhotoObj AS p, 
-RC1c_public.Bpz AS z, 
-RC1Stage.Shapes2 AS s 
+RC1c_public.PhotoObj AS p INNER JOIN RC1c_public.Bpz AS z ON p.objid = z.objid
+INNER JOIN RC1Stage.Shapes2 AS s ON p.objid = s.objid
 WHERE
-AND p.objid = s.objid
-AND p.objid = z.objid
-AND p.objid IS NOT NULL
+p.objid IS NOT NULL
 # qa from dls courtesy perry
 # AND NOT po.processflags & 0x20 !=0 
 AND p.Rdered is NOT NULL
