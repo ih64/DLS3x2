@@ -19,7 +19,6 @@ class ExclusionZones():
         self.subfield = subfield
         self.exRegPath = os.path.join(self.basePath, 'regfiles',self.field+self.subfield+'R.all.2009.reg')
         self.edgeRegPath = os.path.join(self.basePath, 'regfiles',self.field+self.subfield+'.edge.reg')
-        self.centRegPath = os.path.join(self.basePath, 'regfiles',self.field+self.subfield+'Center.reg')
         self.imagePath = os.path.join(self.basePath, 'WCS',self.field + self.subfield + 'wcs.fits')
         self.wcs = self._getWCS(self.imagePath)
         self.regionList = []
@@ -32,11 +31,6 @@ class ExclusionZones():
             self.regionList += self._parseEdgeReg(self.edgeRegPath)
         except:
             print("problem reading file %s " % self.edgeRegPath)
-            pass
-        try:
-            self.regionCenter = self._readCenterReg(self.centRegPath)[0]
-        except:
-            print("problem reading file %s " % self.centRegPath)
             pass
 
         if len(self.regionList) == 0:
@@ -85,7 +79,10 @@ class ExclusionZones():
     
     def _parseEdgeReg(self,filename):
         pixRegions = regions.read_ds9(filename)
-        skyRegions = [r.to_sky(self.wcs) for r in pixRegions]
+        if type(pixRegions[0]) == regions.shapes.rectangle.RectanglePixelRegion:
+            skyRegions = [r.to_sky(self.wcs) for r in pixRegions]
+        else:
+            skyRegions = pixRegions
         return skyRegions
     
     def flagPoints(self, ra, dec, unit='rad'):
@@ -192,13 +189,19 @@ def genRandoms(ra, dec, debug=True):
     rand_dec = np.arcsin(rand_sindec)
     return rand_ra, rand_dec
 
-def astpyToCorr(table):
+def astpyToCorr(table, weight=False):
     """
     turn an astropy table into a treecorr catalog
     anticipating certain format form astropy catalog
     """
-    cat = treecorr.Catalog(ra=table['alpha'].data, dec=table['delta'].data,
-        ra_units='deg', dec_units='deg', g1=table['e1'], g2=table['e2'])
+    if weight:
+        w = 1/(.25**2 + table['de']**2)
+        cat = treecorr.Catalog(ra=table['alpha'].data, dec=table['delta'].data, w=w,
+                    ra_units='deg', dec_units='deg', g1=table['e1'], g2=table['e2'])
+
+    else:
+        cat = treecorr.Catalog(ra=table['alpha'].data, dec=table['delta'].data,
+                    ra_units='deg', dec_units='deg', g1=table['e1'], g2=table['e2'])
     return cat
 
 def calcC(RR):
@@ -295,8 +298,19 @@ def shearBias(lens_table):
     lens_table['e2'] *= mb
     return lens_table
 
+def shapeCut(source_table):
+    '''make draconian cuts to shape catalog'''
+    mask = source_table['de'] < .1
+    mask &= np.sqrt(source_table['e2']**2 + source_table['e1']**2) < .6
+    mask &= source_table['flux_radius'] > 1.8
+    mask &= source_table['flux_radius'] < 5
+    mask &= np.sqrt( 1 - np.square(source_table['b']) / np.square(source_table['a'])) < .9
+    mask &= source_table['b'] < 3
+    
+    return source_table[mask]
+
 def getGGL(lens_table, source_table, n_resample=100, swap_test=True,
-    cal_lens=True, cal_source=True):
+           cal_lens=True, cal_source=True, shape_cut=True):
     """
     calculate galaxy galaxy lensing
 
@@ -320,7 +334,6 @@ def getGGL(lens_table, source_table, n_resample=100, swap_test=True,
         nice null test for photo-zs
     """
     lens_tab_size = len(lens_table)
-    src_tab_size = len(source_table)
     gammat_list = []
     gammax_list = []
     r_list = []
@@ -328,9 +341,13 @@ def getGGL(lens_table, source_table, n_resample=100, swap_test=True,
     #calibrate the shear bias for both tables
     if cal_lens:
         lens_table = shearBias(lens_table)
+    if shape_cut:
+        source_table = shapeCut(source_table)
     if cal_source:
         source_table = shearBias(source_table)
-    
+
+    src_tab_size = len(source_table)
+
     #each iteration in the loop is a bootstrap resample
     for i in range(0,n_resample):
         #make new catalogs by resampling input lens and src
