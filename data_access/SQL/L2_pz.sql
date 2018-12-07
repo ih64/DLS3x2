@@ -202,26 +202,23 @@ SUM(b.c198),
 SUM(b.c199),
 SUM(b.c200)
 FROM
-RC1Stage.PhotoObjAll AS p, 
-RC1c_public.Dlsqc AS d, 
-RC1c_public.Bpz AS z, 
-RC1Stage.Shapes2 AS s,
-RC1c_public.Probs as b 
+RC1c_public.PhotoObj AS p INNER JOIN RC1c_public.Bpz AS z on p.objid = z.objid
+INNER JOIN RC1Stage.Shapes2 AS s on p.objid = s.objid
+INNER JOIN RC1c_public.Probs as b on p.objid = b.objid
 WHERE
-d.objid=s.objid
-AND p.objid = s.objid
-AND p.objid = z.objid
-AND z.objid = b.objid
-AND p.objid IS NOT NULL
-AND p.processflags<8
-AND p.r is NOT NULL
-AND p.b is NOT NULL
-AND p.v is NOT NULL
-AND p.z is NOT NULL
-AND p.r < 22
-AND p.r > 18
+p.objid IS NOT NULL
+AND p.Rdered is NOT NULL
+AND p.Bdered is NOT NULL
+AND p.Vdered is NOT NULL
+AND p.zdered is NOT NULL
+AND p.R < 22
+AND p.R > 18
+AND p.FLAGSB < 4
+AND p.FLAGSV < 4
+AND p.FLAGSR < 4
+AND p.FLAGSz < 4
+AND p.excluded = 0
 # The R band probability that object is a point source `d.Dlsqc_prob`
-AND d.Dlsqc_prob<0.1
+AND p.dlsqc_prob<0.1
 AND z.z_b < .6
 AND z.z_b > 0.45
-GROUP BY p.subfield 

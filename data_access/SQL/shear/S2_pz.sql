@@ -211,8 +211,8 @@ AND p.Rdered is NOT NULL
 AND p.Bdered is NOT NULL
 AND p.Vdered is NOT NULL
 AND p.zdered is NOT NULL
-AND p.R < 22
-AND p.R > 18
+AND p.R < 24.5
+AND p.R > 21
 AND p.FLAGSB < 4
 AND p.FLAGSV < 4
 AND p.FLAGSR < 4
@@ -220,5 +220,11 @@ AND p.FLAGSz < 4
 AND p.excluded = 0
 # The R band probability that object is a point source `d.Dlsqc_prob`
 AND p.dlsqc_prob<0.1
+# Shape cut
+AND s.b > 0.4
+AND s.de < .3
+AND s.status = 1
+# AND SQRT( POW(s.e1,2) + POW(s.e2,2) ) < .6
+# Photo z cut
 AND z.z_b < .8
-AND z.z_b > 0.6
+AND z.z_b > .6
