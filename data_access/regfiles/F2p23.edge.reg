@@ -1,54 +1,26 @@
-# Processed Thu Oct 20 23:28:23 2005 by /sandbox/pgee/projects/fix/bin/makereg -b -a150 -z+20 -x2.0 -r94 -w10000 -l10000 F2p23R.all.cat
-#Processed Thu Oct 20 23:28:23 2005 by /sandbox/pgee/projects/fix/bin/combinereg
-# Processed Thu Oct 20 23:28:23 2005 by /sandbox/pgee/projects/fix/bin/makereg -c white -a25 -r2 -e0 -f F2p23R.make.cat tmpmake3
-# Created by starbleed  starbleed -b -r1 -s15000 /home/DLS/Stacks/2005/F2/p23/R/dlsmake.fits tmpmake2 tmpmake3
-# edge regions added by borders Wed Jun 13 13:53:31 PDT 2007 from F2p23R.joined.reg
-image;box(250.00,9825.00,500.00,350.00)  # color=red
-image;box(750.00,9825.00,500.00,350.00)  # color=red
-image;box(1250.00,9825.00,500.00,350.00)  # color=red
-image;box(1750.00,9825.00,500.00,350.00)  # color=red
-image;box(2250.00,9825.00,500.00,350.00)  # color=red
-image;box(2750.00,9825.00,500.00,350.00)  # color=red
-image;box(3250.00,9825.00,500.00,350.00)  # color=red
-image;box(3750.00,9825.00,500.00,350.00)  # color=red
-image;box(4250.00,9825.00,500.00,350.00)  # color=red
-image;box(4750.00,9825.00,500.00,350.00)  # color=red
-image;box(5250.00,9825.00,500.00,350.00)  # color=red
-image;box(5750.00,9825.00,500.00,350.00)  # color=red
-image;box(6250.00,9825.00,500.00,350.00)  # color=red
-image;box(6750.00,9825.00,500.00,350.00)  # color=red
-image;box(7250.00,9825.00,500.00,350.00)  # color=red
-image;box(7750.00,9825.00,500.00,350.00)  # color=red
-image;box(8250.00,9825.00,500.00,350.00)  # color=red
-image;box(8750.00,9825.00,500.00,350.00)  # color=red
-image;box(9250.00,9825.00,500.00,350.00)  # color=red
-image;box(9750.00,9825.00,500.00,350.00)  # color=red
-image;box(250.00,9625.00,500.00,50.00)  # color=red
-image;box(750.00,9625.00,500.00,50.00)  # color=red
-image;box(1250.00,9625.00,500.00,50.00)  # color=red
-image;box(1750.00,9625.00,500.00,50.00)  # color=red
-image;box(2150.00,9625.00,300.00,50.00)  # color=red
-image;box(125.00,9575.00,250.00,50.00)  # color=red
-image;box(4150.00,9625.00,100.00,50.00)  # color=red
-image;box(6450.00,9625.00,500.00,50.00)  # color=red
-image;box(6950.00,9625.00,500.00,50.00)  # color=red
-image;box(7450.00,9625.00,500.00,50.00)  # color=red
-image;box(7950.00,9625.00,500.00,50.00)  # color=red
-image;box(8450.00,9625.00,500.00,50.00)  # color=red
-image;box(8950.00,9625.00,500.00,50.00)  # color=red
-image;box(9450.00,9625.00,500.00,50.00)  # color=red
-image;box(9850.00,9625.00,300.00,50.00)  # color=red
-image;box(8450.00,9575.00,500.00,50.00)  # color=red
-image;box(8950.00,9575.00,500.00,50.00)  # color=red
-image;box(9450.00,9575.00,500.00,50.00)  # color=red
-image;box(9850.00,9575.00,300.00,50.00)  # color=red
-image;box(8500.00,9525.00,500.00,50.00)  # color=red
-image;box(9000.00,9525.00,500.00,50.00)  # color=red
-image;box(9500.00,9525.00,500.00,50.00)  # color=red
-image;box(9875.00,9525.00,250.00,50.00)  # color=red
-image;box(8600.00,9475.00,500.00,50.00)  # color=red
-image;box(9025.00,9475.00,350.00,50.00)  # color=red
-image;box(8650.00,9325.00,500.00,250.00)  # color=red
-image;box(9025.00,9325.00,250.00,250.00)  # color=red
-image;box(8975.00,9175.00,350.00,50.00)  # color=red
-image;box(9175.00,9400.00,50.00,100.00)  # color=red
+# Region file format: DS9 version 4.1
+global color=green dashlist=8 3 width=1 font="helvetica 10 normal roman" select=1 highlite=1 dash=0 fixed=0 edit=1 move=1 delete=1 include=1 source=1
+fk5
+box(9:14:53.179,+30:20:02.12,128.656",68.7288",269.621) # color=red
+box(9:14:53.280,+30:17:53.65,128.344",68.7288",269.621) # color=red
+box(9:14:53.119,+30:15:45.81,127.329",61.965",269.621) # color=red
+box(9:14:53.115,+30:13:37.32,129.671",59.2595",269.621) # color=red
+box(9:14:53.112,+30:11:28.16,128.306",56.5539",269.621) # color=red
+box(9:14:53.004,+30:09:19.64,128.72",51.1429",269.621) # color=red
+box(9:14:52.896,+30:07:11.14,128.733",45.7318",269.621) # color=red
+box(9:14:52.893,+30:05:02.65,128.267",43.0263",269.621) # color=red
+box(9:14:52.996,+30:02:54.15,128.215",43.1132",269.621) # color=red
+box(9:14:52.889,+30:00:45.64,128.811",37.7022",269.621) # color=red
+box(9:14:53.041,+29:58:37.16,128.824",39.0549",269.621) # color=red
+box(9:14:53.142,+29:56:28.69,128.176",39.0549",269.621) # color=red
+box(9:14:53.242,+29:54:20.21,128.164",39.0549",269.621) # color=red
+box(9:14:53.342,+29:52:12.41,129.504",39.0549",269.621) # color=red
+box(9:14:53.420,+29:50:03.77,129.183",38.4732",269.621) # color=red
+box(9:14:53.520,+29:47:55.29,129.17",38.4732",269.621) # color=red
+box(9:14:53.607,+29:45:46.65,128.832",38.1254",269.621) # color=red
+box(9:14:55.849,+29:43:20.19,164.718",93.5889",269.621) # color=red
+box(9:14:54.245,+29:41:11.64,91.9882",48.6996",269.621) # color=red
+box(9:14:54.684,+29:39:21.32,128.794",58.4169",269.621) # color=red
+box(9:15:01.336,+29:43:52.84,198.857",50.0524",269.621) # color=red
+box(9:15:04.372,+29:43:19.41,133.924",28.4081",269.621) # color=red
+box(9:14:57.219,+29:45:21.58,77.1077",55.4634",269.621) # color=red
