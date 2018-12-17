@@ -103,9 +103,10 @@ def byFields(table, field):
     '''
     helper function to return a table of a particular field only
     '''
-    subfield_vals = table['subfield']
-    field_vals = np.array([i[:2] for i in subfield_vals ] )
-    mask = field_vals == field
+    mask = table['subfield'].str.contains(field)
+#    subfield_vals = table['subfield']
+#    field_vals = np.array([i[:2] for i in subfield_vals ] )
+#    mask = field_vals == field
     return table[mask]
 
 def dumpRandoms(table, debug=False):

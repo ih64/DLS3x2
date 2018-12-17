@@ -5,16 +5,19 @@ from astropy.coordinates import SkyCoord
 prefix = ['F1','F2','F3','F4','F5']
 
 for f in prefix:
-    t = ascii.read('catalogs/'+f+'_all.csv')
-    lens_mask = t['r'] < 22
-    lens_mask &= t['z_b'] > .25
-    lens_mask &= t['z_b'] < .8
+    t = ascii.read(f+'randoms.csv')
+#    t = ascii.read('catalogs/'+f+'_all.csv')
+#    lens_mask = t['r'] < 22
+#    lens_mask &= t['z_b'] > .25
+#    lens_mask &= t['z_b'] < .8
 
-    t = t[lens_mask]
+#    t = t[lens_mask]
 
-    sc = SkyCoord(ra=t['alpha']*u.degree, dec=t['delta']*u.degree)
+#    sc = SkyCoord(ra=t['alpha']*u.degree, dec=t['delta']*u.degree)
+    sc = SkyCoord(ra=t['ra']*u.rad, dec=t['dec']*u.rad)
 
-    with open('regfiles/'+f+'_lens.reg','w') as f:
+
+    with open('regfiles/'+f+'randoms.reg','w') as f:
         header = '# Region file format: DS9 version 4.1\n'
         header += 'global color=green dashlist=8 3 width=1 font="helvetica 10 normal roman" select=1 highlite=1 dash=0 fixed=0 edit=1 move=1 delete=1 include=1 source=1\n'
         header += 'fk5\n'
