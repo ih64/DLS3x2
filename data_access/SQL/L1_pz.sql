@@ -1,5 +1,4 @@
 SELECT 
-p.subfield, 
 SUM(b.c0),
 SUM(b.c1),
 SUM(b.c2),
@@ -202,9 +201,9 @@ SUM(b.c198),
 SUM(b.c199),
 SUM(b.c200)
 FROM
-RC1c_public.PhotoObj AS p INNER JOIN RC1c_public.Bpz AS z on p.objid = z.objid
+RC1c_public2.PhotoObj AS p INNER JOIN RC1c_public2.Bpz AS z on p.objid = z.objid
 INNER JOIN RC1Stage.Shapes2 AS s on p.objid = s.objid
-INNER JOIN RC1c_public.Probs as b on p.objid = b.objid
+INNER JOIN RC1c_public2.Probs as b on p.objid = b.objid
 WHERE
 p.objid IS NOT NULL
 AND p.Rdered is NOT NULL
@@ -220,5 +219,5 @@ AND p.FLAGSz < 4
 AND p.excluded = 0
 # The R band probability that object is a point source `d.Dlsqc_prob`
 AND p.dlsqc_prob<0.1
-AND z.z_b < .5
-AND z.z_b > 0.4
+AND z.z_b < .45
+AND z.z_b > 0.3

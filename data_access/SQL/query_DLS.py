@@ -185,7 +185,7 @@ if __name__ == "__main__":
     if read_sql_file:
         # Read SQL query from file.
         # sql_file = "test.sql"
-        sql_file = "F1_all.sql"
+        sql_file = "L1_pz.sql"
         dls_db.process_sql_file(sql_file, verbose=False)
         print("colnames of initial result = ", dls_db.sql_column_name)
 
@@ -194,7 +194,7 @@ if __name__ == "__main__":
         # output_file_prefix = "F5_gold_sample"
         #output_file_prefix = "Abell781"
         # output_file_prefix = "gold_sample_GGL_2016"
-        output_file_prefix = "F1_all"
+        output_file_prefix = "L1_pz"
         if fix_wild_card_col_name:
             dls_db.fix_wild_card_col_names(fix_table)
             print("colnames after fixing = ", dls_db.sql_column_name)
