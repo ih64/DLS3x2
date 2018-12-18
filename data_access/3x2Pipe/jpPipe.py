@@ -5,11 +5,11 @@ import jpIO
 
 class Pipe:
 
-    def __init__(self):
+    def __init__(self, full_table):
         #set up the source and lens tables
         self.io = jpIO.io()
-        self.source_table = self.io.setup_source()
-        self.lens_table = self.io.setup_lens()
+        self.source_table = self.io.setup_source(full_table)
+        self.lens_table = self.io.setup_lens(full_table)
         self.randoms = self.io.read_randoms('randoms.csv')
         
         #tomography
