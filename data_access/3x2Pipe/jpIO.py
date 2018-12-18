@@ -5,6 +5,7 @@ import treecorr
 class io():
     def __init__(self):
         self.catalog_path = '/global/cscratch1/sd/ihasan/'
+        self.randoms_path = '/global/homes/i/ihasan/shear_gp/data_access/catalogs'
         self.out_path = '/global/homes/i/ihasan/shear_gp/data_access/3x2Pipe/corrs'
 
     def setup_lens(self):
@@ -42,7 +43,7 @@ class io():
         '''
         quick helper function to return the catalog of randoms
         '''
-        rand_cat = pd.read_csv(join(self.catalog_path, catalog_name))
+        rand_cat = pd.read_csv(join(self.randoms_path, catalog_name))
         return rand_cat
 
     def write_corrs(self, out_name, corr):
