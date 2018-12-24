@@ -10,63 +10,56 @@ class Pipe:
         self.io = jpIO.io()
         self.source_table = self.io.setup_source(full_table)
         self.lens_table = self.io.setup_lens(full_table)
-        self.randoms = self.io.read_randoms('randoms.csv')
-        
+        self.randoms = self.io.read_randoms('buzzard_randoms.hdf')
+
         #tomography
-        s_bins = pd.cut(self.source_table['z_b'], [.4,.6,.8,1.])
-        l_bins = pd.cut(self.lens_table['z_b'], [.4,.5,.6,.8])
+        s_bins = pd.cut(self.source_table['z_b'], [.4, .6, .8, 1.])
+        l_bins = pd.cut(self.lens_table['z_b'], [.3, .45, .6, .8])
 
         self.lens_groups = self.lens_table.groupby(l_bins)
         self.source_groups = self.source_table.groupby(s_bins)
 
     def run(self):
         # do w theta correlations
-        # cross correlations are symmetric 
-        i = 0 
-        for keyi, groupi in self.lens_groups:
-            j = 0
-            for keyj, groupj in self.lens_groups:
+        # cross correlations are symmetric
+        for (keyi, groupi), i in zip(self.lens_groups, range(0, 3)):
+            for (keyj, groupj), j in zip(self.lens_groups, range(0, 3)):
                 if (j > i):
                     continue
                 # catch the auto correlation
                 elif i == j:
                     corr = self.wtheta(groupi)
-                    self.io.write_corrs('{}{}_mm.csv'.format(i,j), corr)
+                    self.io.write_corrs('{}{}_mm.csv'.format(i, j), corr)
                 # cross correlations
                 else:
-                    corr = self.wtheta(groupi, table2 = groupj)
-                    self.io.write_corrs('{}{}_mm.csv'.format(i,j), corr)
-                j += 1
-            i += 1
+                    corr = self.wtheta(groupi, table2=groupj)
+                    self.io.write_corrs('{}{}_mm.csv'.format(i, j), corr)
 
         # do shear shear correlations
         # cross correlations are symmetric
-        i = 0 
-        for keyi, groupi in self.source_groups:
-            j = 0
-            for keyj, groupj in self.source_groups:
+        for (keyi, groupi), i in zip(self.source_groups, range(0, 3)):
+            for (keyj, groupj), j in zip(self.source_groups, range(0, 3)):
                 if (j > i):
                     continue
                 # catch the auto correlation
                 elif i == j:
                     corr = self.shearshear(groupi)
-                    self.io.write_corrs('{}{}_gg.csv'.format(i,j), corr)
+                    self.io.write_corrs('{}{}_gg.csv'.format(i, j), corr)
                 # cross correlations
                 else:
-                    corr = self.shearshear(groupi, table2 = groupj)
-                    self.io.write_corrs('{}{}_gg.csv'.format(i,j), corr)
-                j += 1
-            i += 1
+                    corr = self.shearshear(groupi, cat2=groupj)
+                    self.io.write_corrs('{}{}_gg.csv'.format(i, j), corr)
     
         # tangential shear correlations
         # not symmetric
-        for (keyl, groupl), i in zip(self.lens_groups, range(0,3)):
-            for (keys, groups), j in zip(self.source_groups, range(0,3)):
+        for (keyl, groupl), i in zip(self.lens_groups, range(0, 3)):
+            for (keys, groups), j in zip(self.source_groups, range(0, 3)):
                 corr = self.gammat(groupl, groups)
-                self.io.write_corrs('{}{}_gm.csv'.format(i,j), corr)
+                self.io.write_corrs('{}{}_gm.csv'.format(i, j), corr)
         return
 
-    def wtheta(self, table, table2=None, **kwargs):        
+    def wtheta(self, table, table2=None):
+        '''calculate position position correlation'''
         #setup correlation objects
         dd = treecorr.NNCorrelation(min_sep=1.0, max_sep=80, nbins=10, sep_units='arcmin')
         rand = treecorr.Catalog(ra=self.randoms['ra'].values, dec=self.randoms['dec'].values,
@@ -106,7 +99,8 @@ class Pipe:
 #            Coffset = calcC(rr)
             return {"xi":xi, "sig":sig, "r":r}
 
-    def gammat(self, lens, sources, **kwargs):
+    def gammat(self, lens, sources):
+        '''calculate tangential shear correlation'''
         lens_corr = self.io.df_to_corr(lens, shears=True)
         source_corr = self.io.df_to_corr(sources, shears=True)
         rand = treecorr.Catalog(ra=self.randoms['ra'].values, dec=self.randoms['dec'].values,
@@ -120,7 +114,8 @@ class Pipe:
         GGL_rand.process(rand, source_corr)
         return {'xi+': GGL.xi - GGL_rand.xi, 'xi-' : GGL.xi_im, 'r':np.exp(GGL.meanlogr), 'sig':np.sqrt(GGL.varxi)}
 
-    def shearshear(self, cat1, cat2=None, **kwargs):
+    def shearshear(self, cat1, cat2=None):
+        '''calculate shear-shear correlation '''
         ggkwargs = {'min_sep':1, 'max_sep':90, 'nbins':8, 'sep_units':'arcmin'}
         gg = treecorr.GGCorrelation(**ggkwargs)
         tree_cat1 = self.io.df_to_corr(cat1, shears=True)
@@ -134,5 +129,4 @@ class Pipe:
         xim = gg.xim
         sig = np.sqrt(gg.varxi)
 
-        return {'xip': gg.xip, 'xim': gg.xim, 'r':np.exp(gg.meanlogr), 'sig':np.sqrt(gg.varxi)}
-    
+        return {'xip': xip, 'xim': xim, 'r':r, 'sig':sig}
