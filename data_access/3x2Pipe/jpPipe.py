@@ -61,18 +61,18 @@ class Pipe:
     def wtheta(self, table, table2=None):
         '''calculate position position correlation'''
         #setup correlation objects
-        dd = treecorr.NNCorrelation(min_sep=1.0, max_sep=80, nbins=10, sep_units='arcmin')
+        dd = treecorr.NNCorrelation(min_sep=1.0, max_sep=80, nbins=10, sep_units='arcmin', bin_slop=.01)
         rand = treecorr.Catalog(ra=self.randoms['ra'].values, dec=self.randoms['dec'].values,
-                                ra_units='radians', dec_units='radians')
-        rr = treecorr.NNCorrelation(min_sep=1.0, max_sep=80, nbins=10, sep_units='arcmin')
-        dr = treecorr.NNCorrelation(min_sep=1.0, max_sep=80, nbins=10, sep_units='arcmin')
+                                ra_units='radians', dec_units='radians', bin_slop=.01)
+        rr = treecorr.NNCorrelation(min_sep=1.0, max_sep=80, nbins=10, sep_units='arcmin', bin_slop=.01)
+        dr = treecorr.NNCorrelation(min_sep=1.0, max_sep=80, nbins=10, sep_units='arcmin', bin_slop=.01)
 
         #deal with second catalog if need be
         if table2 is not None:
             cat = self.io.df_to_corr(table)
             cat2 = self.io.df_to_corr(table2)
 
-            rd = treecorr.NNCorrelation(min_sep=1.0, max_sep=80, nbins=10, sep_units='arcmin')
+            rd = treecorr.NNCorrelation(min_sep=1.0, max_sep=80, nbins=10, sep_units='arcmin', bin_slop=.01)
 
             rr.process(rand)
             dd.process(cat, cat2)
