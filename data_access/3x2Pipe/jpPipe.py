@@ -10,7 +10,7 @@ class Pipe:
         self.io = jpIO.io()
         self.source_table = self.io.setup_source(full_table)
         self.lens_table = self.io.setup_lens(full_table)
-        self.randoms = self.io.read_randoms('buzzard_randoms.hdf')
+        self.randoms = self.io.read_randoms('buzzard_cutout_randoms.hdf')
 
         #tomography
         s_bins = pd.cut(self.source_table['z_b'], [.4, .6, .8, 1.])
@@ -63,7 +63,7 @@ class Pipe:
         #setup correlation objects
         dd = treecorr.NNCorrelation(min_sep=1.0, max_sep=80, nbins=10, sep_units='arcmin', bin_slop=.01)
         rand = treecorr.Catalog(ra=self.randoms['ra'].values, dec=self.randoms['dec'].values,
-                                ra_units='radians', dec_units='radians', bin_slop=.01)
+                                ra_units='radians', dec_units='radians')
         rr = treecorr.NNCorrelation(min_sep=1.0, max_sep=80, nbins=10, sep_units='arcmin', bin_slop=.01)
         dr = treecorr.NNCorrelation(min_sep=1.0, max_sep=80, nbins=10, sep_units='arcmin', bin_slop=.01)
 
