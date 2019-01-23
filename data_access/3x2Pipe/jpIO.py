@@ -1,13 +1,13 @@
 from os.path import join
-import numpy as np
 import pandas as pd
 import treecorr
 
 class io():
     def __init__(self):
         self.catalog_path = '/home/ishasan/DLS3x2/data_access/catalogs/'
-        self.out_path = '/home/ishasan/DLS3x2/data_access/3x2Pipe/buzzard_cutout_corrs/'
-
+        self.out_path = '/home/ishasan/DLS3x2/data_access/3x2Pipe/MICE_corrs/'
+        self.random_path = '/home/ishasan/DLS3x2/data_access/catalogs/MICE_randoms/'
+        self.random_prefix = 'MICE_randoms'
     def setup_lens(self, table):
         '''helper to read in lens input catalog
         '''
@@ -58,11 +58,17 @@ class io():
         '''
         ext = catalog_name.split('.')[-1]
         if ext == 'hdf':
-            rand_cat = pd.read_hdf(join(self.catalog_path, catalog_name), '/data')
-            return rand_cat
+            rand_cat = pd.read_hdf(join(self.random_path, catalog_name), '/data')
+            rand_corr = treecorr.Catalog(ra=rand_cat['ra'].values, dec=rand_cat['dec'].values,
+                                         ra_units='radians', dec_units='radians')
+            return rand_corr
+        
         elif ext == 'csv':
-            rand_cat = pd.read_csv(join(self.catalog_path, catalog_name))
-            return rand_cat
+            rand_cat = pd.read_csv(join(self.random_path, catalog_name))
+            rand_corr = treecorr.Catalog(ra=rand_cat['ra'].values, dec=rand_cat['dec'].values,
+                                    ra_units='radians', dec_units='radians')
+            return rand_corr
+        
         else:
             print('unrecognized file extension, exiting')
             return

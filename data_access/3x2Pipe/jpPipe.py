@@ -10,8 +10,6 @@ class Pipe:
         self.io = jpIO.io()
         self.source_table = self.io.setup_source(full_table)
         self.lens_table = self.io.setup_lens(full_table)
-        self.randoms = self.io.read_randoms('buzzard_cutout_randoms.hdf')
-
         #tomography
         s_bins = pd.cut(self.source_table['z_b'], [.4, .6, .8, 1.])
         l_bins = pd.cut(self.lens_table['z_b'], [.3, .45, .6, .8])
@@ -28,11 +26,11 @@ class Pipe:
                     continue
                 # catch the auto correlation
                 elif i == j:
-                    corr = self.wtheta(groupi)
+                    corr = self.wtheta(groupi, i)
                     self.io.write_corrs('{}{}_mm.csv'.format(i, j), corr)
                 # cross correlations
                 else:
-                    corr = self.wtheta(groupi, table2=groupj)
+                    corr = self.wtheta(groupi, i, table2=groupj, bin_number_2=j)
                     self.io.write_corrs('{}{}_mm.csv'.format(i, j), corr)
 
         # do shear shear correlations
@@ -54,29 +52,32 @@ class Pipe:
         # not symmetric
         for (keyl, groupl), i in zip(self.lens_groups, range(0, 3)):
             for (keys, groups), j in zip(self.source_groups, range(0, 3)):
-                corr = self.gammat(groupl, groups)
+                corr = self.gammat(groupl, groups, i)
                 self.io.write_corrs('{}{}_gm.csv'.format(i, j), corr)
         return
 
-    def wtheta(self, table, table2=None):
+    def wtheta(self, table, bin_number, table2=None, bin_number_2=None):
         '''calculate position position correlation'''
-        #setup correlation objects
-        dd = treecorr.NNCorrelation(min_sep=1.0, max_sep=80, nbins=10, sep_units='arcmin', bin_slop=.01)
-        rand = treecorr.Catalog(ra=self.randoms['ra'].values, dec=self.randoms['dec'].values,
-                                ra_units='radians', dec_units='radians')
-        rr = treecorr.NNCorrelation(min_sep=1.0, max_sep=80, nbins=10, sep_units='arcmin', bin_slop=.01)
-        dr = treecorr.NNCorrelation(min_sep=1.0, max_sep=80, nbins=10, sep_units='arcmin', bin_slop=.01)
+        #setup correlation objects, random catalog
+        corr_kwargs = {'min_sep':1.0, 'max_sep':80, 'nbins':10,
+                       'sep_units':'arcmin', 'bin_slop':.01}
+        dd = treecorr.NNCorrelation(**corr_kwargs)
+        rr = treecorr.NNCorrelation(**corr_kwargs)
+        dr = treecorr.NNCorrelation(**corr_kwargs)
+
+        rand = self.io.read_randoms(self.io.random_prefix+'_{}.hdf'.format(bin_number))
 
         #deal with second catalog if need be
         if table2 is not None:
             cat = self.io.df_to_corr(table)
             cat2 = self.io.df_to_corr(table2)
+            rand2 = self.io.read_randoms(self.io.random_prefix+'_{}.hdf'.format(bin_number_2))
+            
+            rd = treecorr.NNCorrelation(**corr_kwargs)
 
-            rd = treecorr.NNCorrelation(min_sep=1.0, max_sep=80, nbins=10, sep_units='arcmin', bin_slop=.01)
-
-            rr.process(rand)
+            rr.process(rand, rand2)
             dd.process(cat, cat2)
-            dr.process(cat, rand)
+            dr.process(cat, rand2)
             rd.process(rand, cat2)
 
             xi, varxi = dd.calculateXi(rr, dr, rd)
@@ -99,20 +100,22 @@ class Pipe:
 #            Coffset = calcC(rr)
             return {"xi":xi, "sig":sig, "r":r}
 
-    def gammat(self, lens, sources):
+    def gammat(self, lens, sources, lens_bin_idx):
         '''calculate tangential shear correlation'''
         lens_corr = self.io.df_to_corr(lens, shears=True)
         source_corr = self.io.df_to_corr(sources, shears=True)
-        rand = treecorr.Catalog(ra=self.randoms['ra'].values, dec=self.randoms['dec'].values,
-                                ra_units='radians', dec_units='radians')
+        rand = self.io.read_randoms(self.io.random_prefix+'_{}.hdf'.format(lens_bin_idx))
+
+        corr_kwargs = {'min_sep':0.1, 'max_sep':90, 'nbins':10, 'sep_units':'arcmin'}
         #now make correlation functions
-        GGL = treecorr.NGCorrelation(min_sep=0.1, max_sep=90, nbins=10, sep_units='arcmin')
+        GGL = treecorr.NGCorrelation(**corr_kwargs)
         GGL.process(lens_corr, source_corr)
 
         # calculate random signal
-        GGL_rand = treecorr.NGCorrelation(min_sep=0.1, max_sep=90, nbins=10, sep_units='arcmin')
+        GGL_rand = treecorr.NGCorrelation(**corr_kwargs)
         GGL_rand.process(rand, source_corr)
-        return {'xi+': GGL.xi - GGL_rand.xi, 'xi-' : GGL.xi_im, 'r':np.exp(GGL.meanlogr), 'sig':np.sqrt(GGL.varxi)}
+        return {'xi+': GGL.xi - GGL_rand.xi, 'xi-' : GGL.xi_im,
+                'r':np.exp(GGL.meanlogr), 'sig':np.sqrt(GGL.varxi)}
 
     def shearshear(self, cat1, cat2=None):
         '''calculate shear-shear correlation '''
