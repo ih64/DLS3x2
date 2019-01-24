@@ -109,7 +109,7 @@ def byFields(table, field):
 #    mask = field_vals == field
     return table[mask]
 
-def dumpRandoms(table, debug=False):
+def dumpRandoms(table, prefix, debug=False):
     fields = ('F1','F2','F3','F4','F5')
     subfields = ('p11','p12','p13','p21','p22','p23','p31','p32','p33')
 
@@ -137,7 +137,8 @@ def dumpRandoms(table, debug=False):
 
     for f in fields:
         t = Table([tableViews[f]['rand_ra'], tableViews[f]['rand_dec']], names=('ra','dec') )
-        t.write(f+'randoms.csv', format='csv', overwrite=True)
+        outpath = os.path.join('catalogs','DLS_randoms',prefix,f+'randoms.csv')
+        t.write(outpath, format='csv', overwrite=True)
 
     return
 
@@ -185,8 +186,8 @@ def genRandoms(ra, dec, debug=True):
         print('ra range = %f .. %f' % (ra_min, ra_max))
         print('dec range = %f .. %f' % (dec_min, dec_max))
 
-    rand_ra = np.random.uniform(ra_min, ra_max, 50*ntot)
-    rand_sindec = np.random.uniform(np.sin(dec_min), np.sin(dec_max), 6*ntot)
+    rand_ra = np.random.uniform(ra_min, ra_max, 7*ntot)
+    rand_sindec = np.random.uniform(np.sin(dec_min), np.sin(dec_max), 7*ntot)
     rand_dec = np.arcsin(rand_sindec)
     return rand_ra, rand_dec
 
