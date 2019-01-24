@@ -6,7 +6,7 @@ import treecorr
 class io():
     def __init__(self):
         self.catalog_path = '/global/homes/i/ihasan/shear_gp/data_access/catalogs/'
-        self.out_path = '/global/homes/i/ihasan/shear_gp/data_access/3x2Pipe/corrs/'
+        self.out_path = '/global/homes/i/ihasan/shear_gp/data_access/3x2Pipe/buzzard_corrs/'
 
     def setup_lens(self, table):
         '''helper to read in lens input catalog
@@ -24,13 +24,13 @@ class io():
         # shape cuts
         mask &= table['de'] < .3
         mask &= table['b'] > .4
-        mask &= table['status'] == 1
+#        mask &= table['status'] == 1
         table = table[mask].copy()
 
         # shear calibration
-        m_gamma = 6*np.power(10.0 ,-4) * np.power(table['R'] - 20, 3.26) + 1.04
-        table.loc[:,'e1'] *= m_gamma
-        table.loc[:,'e2'] *= m_gamma
+#        m_gamma = 6*np.power(10.0 ,-4) * np.power(table['R'] - 20, 3.26) + 1.04
+#        table.loc[:,'e1'] *= m_gamma
+#        table.loc[:,'e2'] *= m_gamma
         return table
 
     def df_to_corr(self, table, shears=False):

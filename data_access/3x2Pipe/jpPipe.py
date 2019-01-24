@@ -63,7 +63,7 @@ class Pipe:
         #setup correlation objects
         dd = treecorr.NNCorrelation(min_sep=1.0, max_sep=80, nbins=10, sep_units='arcmin', bin_slop=.01)
         rand = treecorr.Catalog(ra=self.randoms['ra'].values, dec=self.randoms['dec'].values,
-                                ra_units='radians', dec_units='radians', bin_slop=.01)
+                                ra_units='radians', dec_units='radians')
         rr = treecorr.NNCorrelation(min_sep=1.0, max_sep=80, nbins=10, sep_units='arcmin', bin_slop=.01)
         dr = treecorr.NNCorrelation(min_sep=1.0, max_sep=80, nbins=10, sep_units='arcmin', bin_slop=.01)
 

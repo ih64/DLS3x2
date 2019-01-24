@@ -185,7 +185,7 @@ def genRandoms(ra, dec, debug=True):
         print('ra range = %f .. %f' % (ra_min, ra_max))
         print('dec range = %f .. %f' % (dec_min, dec_max))
 
-    rand_ra = np.random.uniform(ra_min, ra_max, 6*ntot)
+    rand_ra = np.random.uniform(ra_min, ra_max, 50*ntot)
     rand_sindec = np.random.uniform(np.sin(dec_min), np.sin(dec_max), 6*ntot)
     rand_dec = np.arcsin(rand_sindec)
     return rand_ra, rand_dec
