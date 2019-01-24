@@ -67,11 +67,15 @@ class Pipe:
 
         rand = self.io.read_randoms(self.io.random_prefix+'_{}.hdf'.format(bin_number))
 
+        assert len(table)*6 == rand.ntot, "randoms are not scaled correctly for auto"
+        
         #deal with second catalog if need be
         if table2 is not None:
             cat = self.io.df_to_corr(table)
             cat2 = self.io.df_to_corr(table2)
             rand2 = self.io.read_randoms(self.io.random_prefix+'_{}.hdf'.format(bin_number_2))
+
+            assert len(table2)*6 == rand2.ntot, "randoms are not scaled correctly for cross"
             
             rd = treecorr.NNCorrelation(**corr_kwargs)
 
