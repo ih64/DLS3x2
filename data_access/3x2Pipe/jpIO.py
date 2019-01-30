@@ -1,13 +1,24 @@
-from os.path import join
+from os.path import join, exists
 import pandas as pd
+import yaml
 import treecorr
 
 class io():
-    def __init__(self):
-        self.catalog_path = '/home/ishasan/DLS3x2/data_access/catalogs/'
-        self.out_path = '/home/ishasan/DLS3x2/data_access/3x2Pipe/MICE_corrs/'
-        self.random_path = '/home/ishasan/DLS3x2/data_access/catalogs/MICE_randoms/'
-        self.random_prefix = 'MICE_randoms'
+    def __init__(self, filename='config.yaml'):
+        # TODO make the config dict the attribute and use it later in the program
+        # sanatize the yaml file
+        config_keys = ['catalog_path', 'out_path', 'random_path', 'random_prefix']
+        with open(filename,'r') as f:
+            path_dict = yaml.load(f)
+            for key in path_dict.keys():
+                assert key in config_keys, 'key must be in {}'.format(config_keys)
+                if 'path' in key:
+                    assert exists(path_dict[key]), 'path {} does not exist'.format(path_dict[key])
+                
+        self.catalog_path = path_dict['catalog_path']
+        self.out_path = path_dict['out_path']
+        self.random_path = path_dict['random_path']
+        self.random_prefix = path_dict['random_prefix']
     def setup_lens(self, table):
         '''helper to read in lens input catalog
         '''

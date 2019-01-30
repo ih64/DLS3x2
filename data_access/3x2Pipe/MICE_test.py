@@ -6,8 +6,8 @@ import jpPipe
 class MICETestCase(unittest.TestCase):
     ''' test suite to make sure the pipeline runs with the MICE catalog'''
     def setUp(self):
-        t = pd.read_hdf('../catalogs/MICE.hdf', '/data')
-        self.Pipe = jpPipe.Pipe(t)
+        t = pd.read_hdf('../catalogs/MICE_big.hdf', '/data')
+        self.Pipe = jpPipe.Pipe(t, filename='config.yaml')
 
     def tearDown(self):
         del self.Pipe

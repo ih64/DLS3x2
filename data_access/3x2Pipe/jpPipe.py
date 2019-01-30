@@ -1,3 +1,4 @@
+
 import pandas as pd
 import numpy as np
 import treecorr
@@ -5,9 +6,9 @@ import jpIO
 
 class Pipe:
 
-    def __init__(self, full_table):
+    def __init__(self, full_table, filename='config.yaml'):
         #set up the source and lens tables
-        self.io = jpIO.io()
+        self.io = jpIO.io(filename)
         self.source_table = self.io.setup_source(full_table)
         self.lens_table = self.io.setup_lens(full_table)
         #tomography
