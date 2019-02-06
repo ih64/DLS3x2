@@ -66,7 +66,7 @@ class Pipe:
         rr = treecorr.NNCorrelation(**corr_kwargs)
         dr = treecorr.NNCorrelation(**corr_kwargs)
 
-        rand = self.io.read_randoms(self.io.random_prefix+'_{}.hdf'.format(bin_number))
+        rand = self.io.read_randoms(self.io.path_dict['random_prefix']+'_{}.hdf'.format(bin_number))
 
         assert len(table)*6 == rand.ntot, "randoms are not scaled correctly for auto"
         
@@ -74,7 +74,7 @@ class Pipe:
         if table2 is not None:
             cat = self.io.df_to_corr(table)
             cat2 = self.io.df_to_corr(table2)
-            rand2 = self.io.read_randoms(self.io.random_prefix+'_{}.hdf'.format(bin_number_2))
+            rand2 = self.io.read_randoms(self.io.path_dict['random_prefix']+'_{}.hdf'.format(bin_number_2))
 
             assert len(table2)*6 == rand2.ntot, "randoms are not scaled correctly for cross"
             
@@ -109,7 +109,7 @@ class Pipe:
         '''calculate tangential shear correlation'''
         lens_corr = self.io.df_to_corr(lens, shears=True)
         source_corr = self.io.df_to_corr(sources, shears=True)
-        rand = self.io.read_randoms(self.io.random_prefix+'_{}.hdf'.format(lens_bin_idx))
+        rand = self.io.read_randoms(self.io.path_dict['random_prefix']+'_{}.hdf'.format(lens_bin_idx))
 
         corr_kwargs = {'min_sep':0.1, 'max_sep':90, 'nbins':10, 'sep_units':'arcmin'}
         #now make correlation functions
