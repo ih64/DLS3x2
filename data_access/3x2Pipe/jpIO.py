@@ -1,3 +1,4 @@
+import numpy as np
 from os.path import join, exists
 import pandas as pd
 import yaml
@@ -15,7 +16,7 @@ class io():
             for key in self.path_dict.keys():
                 assert key in config_keys, 'key must be in {}'.format(config_keys)
                 if 'path' in key:
-                    assert exists(self.path_dict[key]), 'path {} does not exist'.format(path_dict[key])
+                    assert exists(self.path_dict[key]), 'path {} does not exist'.format(self.path_dict[key])
                 
     def setup_lens(self, table):
         '''helper to read in lens input catalog
