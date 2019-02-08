@@ -6,17 +6,14 @@ import jpIO
 
 class Pipe:
 
-    def __init__(self, full_table, filename='config.yaml'):
+    def __init__(self, filename='config.yaml'):
         #set up the source and lens tables
         self.io = jpIO.io(filename)
-        self.source_table = self.io.setup_source(full_table)
-        self.lens_table = self.io.setup_lens(full_table)
+        self.source_table = self.io.setup_source()
+        self.lens_table = self.io.setup_lens()
         #tomography
-        s_bins = pd.cut(self.source_table['z_b'], [.4, .6, .8, 1.])
-        l_bins = pd.cut(self.lens_table['z_b'], [.3, .45, .6, .8])
-
-        self.lens_groups = self.lens_table.groupby(l_bins)
-        self.source_groups = self.source_table.groupby(s_bins)
+        self.lens_groups = self.lens_table.groupby('z_bin')
+        self.source_groups = self.source_table.groupby('z_bin')
 
     def run(self):
         # do w theta correlations

@@ -17,36 +17,17 @@ class io():
                 if 'path' in key:
                     assert exists(self.path_dict[key]), 'path {} does not exist'.format(path_dict[key])
                 
-    def setup_lens(self, table):
-        '''helper to read in lens input catalog
-        '''
-        mask = table['R'] < self.lens_dict['mag_high']
-        mask &= table['R'] > self.lens_dict['mag_low']
-        return table[mask]
+            assert exists(self.lens_dict['lens_path']), 'lens file {} does not exist'.format(self.lens_dict['lens_path'])
+            assert exists(self.source_dict['source_path']), 'source file {} does not exist'.format(self.lens_dict['source_path'])
+    def setup_lens(self):
+        '''helper to read in lens input '''
+        table = pd.read_hdf(self.lens_dict['lens_path'])
+        return table
 
-    def setup_source(self, table):
-        '''helper to read in source input catalog
-        '''
-        # magnitude cuts
-        mask = table['R'] < self.source_dict['mag_high']
-        mask &= table['R'] > self.source_dict['mag_low']
-
-        if self.source_dict['calibrate']:
-            # shape cuts
-            mask &= table['de'] < self.source_dict['de']
-            mask &= table['b'] > self.source_dict['b']
-            mask &= table['status'] == 1
-            table = table[mask].copy()
-
-            # shear calibration
-            m_gamma = 6*np.power(10.0 ,-4) * np.power(table['R'] - 20, 3.26) + 1.04
-            table.loc[:,'e1'] *= m_gamma
-            table.loc[:,'e2'] *= m_gamma
-            return table
-
-        else:
-            table = table[mask].copy()
-            return table
+    def setup_source(self):
+        '''helper to read in source input catalog '''
+        table = pd.read_hdf(self.source_dict['source_path'])
+        return table
         
     def df_to_corr(self, table, shears=False):
         """
