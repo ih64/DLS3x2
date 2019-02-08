@@ -4,7 +4,7 @@ import pandas as pd
 import yaml
 
 class Tomography():
-    def __init__(self, filename='config.yaml'):
+    def __init__(self, filename='tomog.yaml'):
         ''' do something '''
         # read in the file paths and such
         # TODO
@@ -48,23 +48,23 @@ class Tomography():
         
         # join datafames on the objid
         joined_df = phot.set_index('objid').join(pz.set_index('objid'),
-                                                 lsuffix='l_', rsuffix='r_')
+                                                 lsuffix='_l', rsuffix='_r')
         # assign bins to galaxies
         bin1 = joined_df['w1'] > .5
         bin2 = joined_df['w2'] > .5
         bin3 = joined_df['w3'] > .5
 
-        joined_df[bin1].loc[:, 'z_bin'] = 0
-        joined_df[bin2].loc[:, 'z_bin'] = 1
-        joined_df[bin3].loc[:, 'z_bin'] = 2
+        joined_df.loc[bin1, 'z_bin'] = 0
+        joined_df.loc[bin2, 'z_bin'] = 1
+        joined_df.loc[bin3, 'z_bin'] = 2
 
         # save the catalog, trimming columns
         if cuts == 'lens':
-            joined_df.loc[:, 'objid_r', 'Bdered', 'Vdered', 'Rdered', 'zdered',
-                          'alpha', 'delta'].to_hdf(self.lens_dict['lens_out'], '/data')
+            joined_df.loc[:, ['Bdered', 'Vdered', 'Rdered', 'zdered',
+                              'alpha', 'delta', 'z_bin']].to_hdf(self.lens_dict['lens_out'], '/data')
         elif cuts == 'source':
-            joined_df.loc[:, 'objid_r', 'Bdered', 'Vdered', 'Rdered', 'zdered',
-                          'alpha', 'delta', 'e1', 'e2', 'de'].to_hdf(self.source_dict['source_out'], '/data')
+            joined_df.loc[:, ['objid_r', 'Bdered', 'Vdered', 'Rdered', 'zdered',
+                           'alpha', 'delta', 'z_bin', 'e1', 'e2', 'de']].to_hdf(self.source_dict['source_out'], '/data')
         return
 
     def phot_cuts(self, table, cuts):
@@ -98,3 +98,7 @@ class Tomography():
         # prepare place holder for bins
         table['z_bin'] = np.zeros(len(table), np.int8)
         return table
+
+if __name__ == '__main__':
+    tom = Tomography()
+    tom.run()
