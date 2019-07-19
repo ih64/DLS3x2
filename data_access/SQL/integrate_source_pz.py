@@ -24,7 +24,7 @@ ddata['w2'] = w2
 ddata['w3'] = w3
 
 #ddata.to_hdf('/global/cscratch1/sd/ihasan/output.hdf','/data')
-ddata.to_hdf('/global/cscratch1/sd/ihasan/source_pz.hdf','/data')
+ddata.to_hdf('source_pz.hdf','/data')
 
 
 #w1 = ddata.apply(integrate, args=(40,60), axis=1, meta=('w1', 'f8'))

@@ -1,5 +1,5 @@
 #!/bin/bash -l
 
-module load python3/3.6.0
+source /global/common/software/lsst/common/miniconda/setup_current_python.sh
 
-python pipeline.py
+python jpPipe.py
