@@ -57,15 +57,15 @@ class Pipe:
     def wtheta(self, table, bin_number, table2=None, bin_number_2=None):
         '''calculate position position correlation'''
         #setup correlation objects, random catalog
-        corr_kwargs = {'min_sep':1.0, 'max_sep':80, 'nbins':10,
-                       'sep_units':'arcmin', 'bin_slop':.01}
+        corr_kwargs = {'min_sep':1.0, 'max_sep':90, 'nbins':10,
+                       'sep_units':'arcmin'}
         dd = treecorr.NNCorrelation(**corr_kwargs)
         rr = treecorr.NNCorrelation(**corr_kwargs)
         dr = treecorr.NNCorrelation(**corr_kwargs)
 
         rand = self.io.read_randoms(self.io.path_dict['random_prefix']+'_{}.hdf'.format(bin_number))
 
-        assert len(table)*6 == rand.ntot, "randoms are not scaled correctly for auto"
+#        assert len(table)*6 == rand.ntot, "randoms are not scaled correctly for auto"
         
         #deal with second catalog if need be
         if table2 is not None:
@@ -73,7 +73,7 @@ class Pipe:
             cat2 = self.io.df_to_corr(table2)
             rand2 = self.io.read_randoms(self.io.path_dict['random_prefix']+'_{}.hdf'.format(bin_number_2))
 
-            assert len(table2)*6 == rand2.ntot, "randoms are not scaled correctly for cross"
+#            assert len(table2)*6 == rand2.ntot, "randoms are not scaled correctly for cross"
             
             rd = treecorr.NNCorrelation(**corr_kwargs)
 
@@ -104,11 +104,11 @@ class Pipe:
 
     def gammat(self, lens, sources, lens_bin_idx):
         '''calculate tangential shear correlation'''
-        lens_corr = self.io.df_to_corr(lens, shears=True)
+        lens_corr = self.io.df_to_corr(lens, shears=False)
         source_corr = self.io.df_to_corr(sources, shears=True)
         rand = self.io.read_randoms(self.io.path_dict['random_prefix']+'_{}.hdf'.format(lens_bin_idx))
 
-        corr_kwargs = {'min_sep':0.1, 'max_sep':90, 'nbins':10, 'sep_units':'arcmin'}
+        corr_kwargs = {'min_sep':3, 'max_sep':90, 'nbins':6, 'sep_units':'arcmin'}
         #now make correlation functions
         GGL = treecorr.NGCorrelation(**corr_kwargs)
         GGL.process(lens_corr, source_corr)
@@ -135,3 +135,7 @@ class Pipe:
         sig = np.sqrt(gg.varxi)
 
         return {'xip': xip, 'xim': xim, 'r':r, 'sig':sig}
+
+if __name__ == '__main__':
+    p = Pipe()
+    p.run()

@@ -2,6 +2,7 @@ from os.path import exists
 import numpy as np
 import pandas as pd
 import yaml
+import pdb
 
 class Tomography():
     def __init__(self, filename='tomog.yaml'):
@@ -17,6 +18,7 @@ class Tomography():
             self.lens_pz_file = config['lens_pz_file']
             self.source_pz_file = config['source_pz_file']
             self.phot_shape_file = config['phot_shape_file']
+            self.pz_sel_thresh = config['pz_sel_thresh']
             self.lens_dict = config['lens']
             self.source_dict = config['source']
 
@@ -37,34 +39,44 @@ class Tomography():
         phot = pd.read_hdf(phot_file, '/data')
         pz = pd.read_hdf(pz_file, '/data')
 
+#        pdb.set_trace()
+
         # toss out galaxies that have low significance of being in any bins
-        mask = pz['w1'] < .5
-        mask |= pz['w2'] < .5
-        mask |= pz['w3'] < .5
+        mask = pz['w1'] > self.pz_sel_thresh
+        mask |= pz['w2'] > self.pz_sel_thresh
+        mask |= pz['w3'] > self.pz_sel_thresh
         pz = pz[mask].copy()
         
         # make the photometry cuts
         phot = self.phot_cuts(phot, cuts)
-        
+
+        # de-dup the photometry catalog
+        phot = self.dedup(phot)
+
         # join datafames on the objid
         joined_df = phot.set_index('objid').join(pz.set_index('objid'),
-                                                 lsuffix='_l', rsuffix='_r')
+                                                 how='inner',lsuffix='_l', rsuffix='_r')
         # assign bins to galaxies
-        bin1 = joined_df['w1'] > .5
-        bin2 = joined_df['w2'] > .5
-        bin3 = joined_df['w3'] > .5
+        bin1 = joined_df['w1'] > self.pz_sel_thresh
+        bin2 = joined_df['w2'] > self.pz_sel_thresh
+        bin3 = joined_df['w3'] > self.pz_sel_thresh
+
+#        pdb.set_trace()
 
         joined_df.loc[bin1, 'z_bin'] = 0
         joined_df.loc[bin2, 'z_bin'] = 1
         joined_df.loc[bin3, 'z_bin'] = 2
 
+        # toss out any galaxies that got assigned to no bins
+        bin_mask = joined_df['z_bin'] == -1
+        joined_df = joined_df[~bin_mask].copy()
         # save the catalog, trimming columns
         if cuts == 'lens':
-            joined_df.loc[:, ['Bdered', 'Vdered', 'Rdered', 'zdered',
-                              'alpha', 'delta', 'z_bin']].to_hdf(self.lens_dict['lens_out'], '/data')
+            joined_df.loc[:, ['subfield_l','Bdered', 'Vdered', 'Rdered', 'zdered',
+                              'alpha', 'delta', 'z_b', 'z_bin', 'w1', 'w2', 'w3']].to_hdf(self.lens_dict['lens_out'], '/data')
         elif cuts == 'source':
-            joined_df.loc[:, ['objid_r', 'Bdered', 'Vdered', 'Rdered', 'zdered',
-                           'alpha', 'delta', 'z_bin', 'e1', 'e2', 'de']].to_hdf(self.source_dict['source_out'], '/data')
+            joined_df.loc[:, ['subfield_l', 'Bdered', 'Vdered', 'Rdered', 'zdered',
+                           'alpha', 'delta', 'z_b', 'z_bin', 'w1', 'w2', 'w3','e1', 'e2', 'de']].to_hdf(self.source_dict['source_out'], '/data')
         return
 
     def phot_cuts(self, table, cuts):
@@ -96,8 +108,16 @@ class Tomography():
                 table = table[mask].copy()
             
         # prepare place holder for bins
-        table['z_bin'] = np.zeros(len(table), np.int8)
+        table['z_bin'] = -1*np.ones(len(table), np.int8)
         return table
+
+    def dedup(self, table):
+        '''remove duplicate rows in the photometry catalog'''
+        unique_objids, uniq_idx, counts = np.unique(table['objid'], return_index=True,
+                                                    return_counts=True)
+
+        unique_table = table.iloc[uniq_idx[counts == 1]].copy()
+        return unique_table
 
 if __name__ == '__main__':
     tom = Tomography()
