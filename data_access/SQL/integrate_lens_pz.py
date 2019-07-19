@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-import dask.dataframe as dd
 
 
 scratch_path = '/global/cscratch1/sd/ihasan/lens_pz.tab'
@@ -15,8 +14,8 @@ def integrate(row, low, high):
     return total
 
 
-w1 = ddata.apply(integrate, args=(30,45), axis=1)
-w2 = ddata.apply(integrate, args=(45,60), axis=1)
+w1 = ddata.apply(integrate, args=(37,48), axis=1)
+w2 = ddata.apply(integrate, args=(48,60), axis=1)
 w3 = ddata.apply(integrate, args=(60,80), axis=1)
 
 ddata['w1'] = w1
@@ -24,7 +23,7 @@ ddata['w2'] = w2
 ddata['w3'] = w3
 
 #ddata.to_hdf('/global/cscratch1/sd/ihasan/output.hdf','/data')
-ddata.to_hdf('/global/cscratch1/sd/ihasan/lens_pz.hdf','/data')
+ddata.to_hdf('../catalogs/lens_pz.hdf','/data')
 
 
 #w1 = ddata.apply(integrate, args=(40,60), axis=1, meta=('w1', 'f8'))
