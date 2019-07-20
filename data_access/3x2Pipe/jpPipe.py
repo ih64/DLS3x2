@@ -1,4 +1,4 @@
-
+import argparse
 import pandas as pd
 import numpy as np
 import treecorr
@@ -6,11 +6,17 @@ import jpIO
 
 class Pipe:
 
-    def __init__(self, filename='config.yaml'):
+    def __init__(self, infile, outdir, filename='config.yaml'):
         #set up the source and lens tables
         self.io = jpIO.io(filename)
-        self.source_table = self.io.setup_source()
-        self.lens_table = self.io.setup_lens()
+        #TODO
+        #use flask versionof settup
+        self.outdir = outdir
+        tables = self.io.setup_FLASK_cats(infile)
+
+        self.source_table = tables['source']
+        self.lens_table = tables['lens']
+        self.randoms = tables['rand']
         #tomography
         self.lens_groups = self.lens_table.groupby('z_bin')
         self.source_groups = self.source_table.groupby('z_bin')
@@ -25,11 +31,11 @@ class Pipe:
                 # catch the auto correlation
                 elif i == j:
                     corr = self.wtheta(groupi, i)
-                    self.io.write_corrs('{}{}_mm.csv'.format(i, j), corr)
+                    self.io.write_corrs('{}{}_mm.csv'.format(i, j), corr, self.outdir)
                 # cross correlations
                 else:
                     corr = self.wtheta(groupi, i, table2=groupj, bin_number_2=j)
-                    self.io.write_corrs('{}{}_mm.csv'.format(i, j), corr)
+                    self.io.write_corrs('{}{}_mm.csv'.format(i, j), corr, self.outdir)
 
         # do shear shear correlations
         # cross correlations are symmetric
@@ -40,18 +46,18 @@ class Pipe:
                 # catch the auto correlation
                 elif i == j:
                     corr = self.shearshear(groupi)
-                    self.io.write_corrs('{}{}_gg.csv'.format(i, j), corr)
+                    self.io.write_corrs('{}{}_gg.csv'.format(i, j), corr, self.outdir)
                 # cross correlations
                 else:
                     corr = self.shearshear(groupi, cat2=groupj)
-                    self.io.write_corrs('{}{}_gg.csv'.format(i, j), corr)
+                    self.io.write_corrs('{}{}_gg.csv'.format(i, j), corr, self.outdir)
     
         # tangential shear correlations
         # not symmetric
         for (keyl, groupl), i in zip(self.lens_groups, range(0, 3)):
             for (keys, groups), j in zip(self.source_groups, range(0, 3)):
                 corr = self.gammat(groupl, groups, i)
-                self.io.write_corrs('{}{}_gm.csv'.format(i, j), corr)
+                self.io.write_corrs('{}{}_gm.csv'.format(i, j), corr, self.outdir)
         return
 
     def wtheta(self, table, bin_number, table2=None, bin_number_2=None):
@@ -63,7 +69,7 @@ class Pipe:
         rr = treecorr.NNCorrelation(**corr_kwargs)
         dr = treecorr.NNCorrelation(**corr_kwargs)
 
-        rand = self.io.read_randoms(self.io.path_dict['random_prefix']+'_{}.hdf'.format(bin_number))
+        rand = self.randoms
 
 #        assert len(table)*6 == rand.ntot, "randoms are not scaled correctly for auto"
         
@@ -71,7 +77,7 @@ class Pipe:
         if table2 is not None:
             cat = self.io.df_to_corr(table)
             cat2 = self.io.df_to_corr(table2)
-            rand2 = self.io.read_randoms(self.io.path_dict['random_prefix']+'_{}.hdf'.format(bin_number_2))
+            rand2 = self.randoms
 
 #            assert len(table2)*6 == rand2.ntot, "randoms are not scaled correctly for cross"
             
@@ -106,7 +112,7 @@ class Pipe:
         '''calculate tangential shear correlation'''
         lens_corr = self.io.df_to_corr(lens, shears=False)
         source_corr = self.io.df_to_corr(sources, shears=True)
-        rand = self.io.read_randoms(self.io.path_dict['random_prefix']+'_{}.hdf'.format(lens_bin_idx))
+        rand = self.randoms
 
         corr_kwargs = {'min_sep':3, 'max_sep':90, 'nbins':6, 'sep_units':'arcmin'}
         #now make correlation functions
@@ -132,10 +138,13 @@ class Pipe:
         r = np.exp(gg.meanlogr)
         xip = gg.xip
         xim = gg.xim
-        sig = np.sqrt(gg.varxi)
-
+        sig = np.sqrt(gg.varxip)
         return {'xip': xip, 'xim': xim, 'r':r, 'sig':sig}
 
 if __name__ == '__main__':
-    p = Pipe()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('infile', help='the path to the input flask catalog')
+    parser.add_argument('outfile', help='the output path for the correlations')
+    args = parser.parse_args()
+    p = Pipe(args.infile, args.outfile)
     p.run()

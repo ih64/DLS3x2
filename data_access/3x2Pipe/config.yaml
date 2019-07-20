@@ -1,0 +1,2 @@
+flask:
+ flask_rand : '/global/u1/i/ihasan/my_packages/flask/test/rand_catalog.dat'
