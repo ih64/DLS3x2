@@ -1,4 +1,6 @@
+import os
 import argparse
+from os.path import join
 import pandas as pd
 import numpy as np
 import treecorr
@@ -6,14 +8,20 @@ import jpIO
 
 class Pipe:
 
-    def __init__(self, infile, outdir, filename='config.yaml'):
+    def __init__(self, infile, filename='config.yaml', 
+                 inpath='/global/cscratch1/sd/ihasan/catalogs', outdir='/global/cscratch1/sd/ihasan/flask/output'):
         #set up the source and lens tables
         self.io = jpIO.io(filename)
         #TODO
         #use flask versionof settup
-        self.outdir = outdir
-        tables = self.io.setup_FLASK_cats(infile)
+        fname = infile.split('.dat')[0]
+        self.outdir = join(outdir,fname)
+        if os.path.exists(self.outdir):
+          pass
+        else:
+            os.mkdir(self.outdir)
 
+        tables = self.io.setup_FLASK_cats(join(inpath, infile))
         self.source_table = tables['source']
         self.lens_table = tables['lens']
         self.randoms = tables['rand']
@@ -144,7 +152,10 @@ class Pipe:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('infile', help='the path to the input flask catalog')
-    parser.add_argument('outfile', help='the output path for the correlations')
+    parser.add_argument('--outfile', help='the output path for the correlations')
     args = parser.parse_args()
-    p = Pipe(args.infile, args.outfile)
+    if args.outfile:
+        p = Pipe(args.infile, outdir=args.outfile)
+    else:
+        p = Pipe(args.infile)
     p.run()
