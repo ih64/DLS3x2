@@ -1,0 +1,16 @@
+paths:
+ out_path : '/global/homes/i/ihasan/shear_gp/data_access/3x2Pipe/DLS_corrs/'
+ random_path : '/global/homes/i/ihasan/shear_gp/data_access/catalogs/DLS_randoms/'
+ random_prefix : 'randoms'
+lens:
+ mag_high : 22
+ mag_low : 20
+ lens_path : '/global/homes/i/ihasan/shear_gp/data_access/catalogs/lens.hdf'
+source:
+ mag_high: 24.5
+ mag_low : 22
+ b : .4
+ de : .3
+ source_path : '/global/homes/i/ihasan/shear_gp/data_access/catalogs/source.hdf'
+flask:
+ flask_rand : '/global/u1/i/ihasan/my_packages/flask/test/rand_catalog.dat'
