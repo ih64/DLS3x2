@@ -153,9 +153,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('infile', help='the path to the input flask catalog')
     parser.add_argument('--outfile', help='the output path for the correlations')
+    parser.add_argument('--inpath', help='path to find file')
     args = parser.parse_args()
-    if args.outfile:
-        p = Pipe(args.infile, outdir=args.outfile)
+    if args.inpath:
+        p = Pipe(args.infile, inpath=args.inpath)
     else:
         p = Pipe(args.infile)
     p.run()
