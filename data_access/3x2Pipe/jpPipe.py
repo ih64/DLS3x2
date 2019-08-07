@@ -1,17 +1,18 @@
 import os
 import argparse
 from os.path import join
-import pandas as pd
 import numpy as np
 import treecorr
 import jpIO
 
 class Pipe:
 
-    def __init__(self, infile, filename='config.yaml', 
-                 inpath='/global/cscratch1/sd/ihasan/catalogs', outdir='/global/cscratch1/sd/ihasan/flask/output'):
+    def __init__(self, infile, inpath='/home/ishasan/DLS_flask_catalogs',
+                 outdir='/home/ishasan/flask_corrs'):
         #set up the source and lens tables
-        self.io = jpIO.io(filename)
+        realization = infile.split('_')[1][0]
+        print('the realization number is {}'.format(realization))
+        self.io = jpIO.io(realization)
         #TODO
         #use flask versionof settup
         fname = infile.split('.dat')[0]
@@ -152,11 +153,12 @@ class Pipe:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('infile', help='the path to the input flask catalog')
+    parser.add_argument('realization', help='which dls realization to grab')
     parser.add_argument('--outfile', help='the output path for the correlations')
     parser.add_argument('--inpath', help='path to find file')
     args = parser.parse_args()
     if args.inpath:
-        p = Pipe(args.infile, inpath=args.inpath)
+        p = Pipe(args.infile, args.realization, inpath=args.inpath)
     else:
         p = Pipe(args.infile)
     p.run()
