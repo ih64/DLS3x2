@@ -39,8 +39,6 @@ class Tomography():
         phot = pd.read_hdf(phot_file, '/data')
         pz = pd.read_hdf(pz_file, '/data')
 
-#        pdb.set_trace()
-
         # toss out galaxies that have low significance of being in any bins
         mask = pz['w1'] > self.pz_sel_thresh
         mask |= pz['w2'] > self.pz_sel_thresh
@@ -60,8 +58,6 @@ class Tomography():
         bin1 = joined_df['w1'] > self.pz_sel_thresh
         bin2 = joined_df['w2'] > self.pz_sel_thresh
         bin3 = joined_df['w3'] > self.pz_sel_thresh
-
-#        pdb.set_trace()
 
         joined_df.loc[bin1, 'z_bin'] = 0
         joined_df.loc[bin2, 'z_bin'] = 1
