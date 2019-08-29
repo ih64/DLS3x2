@@ -121,7 +121,7 @@ class Pipe:
 
     def shearshear(self, cat1, cat2=None):
         '''calculate shear-shear correlation '''
-        ggkwargs = {'min_sep':1, 'max_sep':90, 'nbins':8, 'sep_units':'arcmin'}
+        ggkwargs = {'min_sep':3, 'max_sep':90, 'nbins':8, 'sep_units':'arcmin'}
         gg = treecorr.GGCorrelation(**ggkwargs)
         tree_cat1 = self.io.df_to_corr(cat1, shears=True)
         if cat2 is not None:
@@ -132,7 +132,7 @@ class Pipe:
         r = np.exp(gg.meanlogr)
         xip = gg.xip
         xim = gg.xim
-        sig = np.sqrt(gg.varxi)
+        sig = np.sqrt(gg.varxip)
 
         return {'xip': xip, 'xim': xim, 'r':r, 'sig':sig}
 
