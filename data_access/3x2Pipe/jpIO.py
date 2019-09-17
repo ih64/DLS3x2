@@ -68,4 +68,5 @@ class io():
         df = pd.DataFrame(data=corr)
         output_path = join(outpath, out_name)
         df.to_csv(output_path)
+        print('writing to {}'.format(output_path))
         return
