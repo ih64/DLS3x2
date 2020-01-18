@@ -47,10 +47,11 @@ class Tomography():
         
         # make the photometry cuts
         phot = self.phot_cuts(phot, cuts)
-
+        
         # de-dup the photometry catalog
         phot = self.dedup(phot)
-
+        pz = self.dedup(pz)
+        
         # join datafames on the objid
         joined_df = phot.set_index('objid').join(pz.set_index('objid'),
                                                  how='inner',lsuffix='_l', rsuffix='_r')
@@ -83,7 +84,7 @@ class Tomography():
         if cuts == 'lens':
             mask = table['Rdered'] <= self.lens_dict['mag_high']
             mask &= table['Rdered'] > self.lens_dict['mag_low']
-            table = table[mask].copy()
+            table = table.loc[mask].copy()
 
         elif cuts == 'source':
             # magnitude cuts
@@ -94,7 +95,7 @@ class Tomography():
                 mask &= table['de'] < self.source_dict['de']
                 mask &= table['b'] > self.source_dict['b']
                 mask &= table['status'] == 1
-                table = table[mask].copy()
+                table = table.loc[mask].copy()
 
                 # shear calibration
                 m_gamma = 6*np.power(10.0, -4) * np.power(table['Rdered'] - 20, 3.26) + 1.04
@@ -112,7 +113,7 @@ class Tomography():
         unique_objids, uniq_idx, counts = np.unique(table['objid'], return_index=True,
                                                     return_counts=True)
 
-        unique_table = table.iloc[uniq_idx[counts == 1]].copy()
+        unique_table = table.iloc[uniq_idx].copy()
         return unique_table
 
 if __name__ == '__main__':
