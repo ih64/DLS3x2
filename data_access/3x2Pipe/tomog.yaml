@@ -1,15 +1,15 @@
 lens_pz_file : '/global/homes/i/ihasan/shear_gp/data_access/catalogs/lens_pz.hdf'
-source_pz_file : '/global/homes/i/ihasan/shear_gp/data_access/catalogs/source_pz.hdf'
-phot_shape_file : '/global/homes/i/ihasan/shear_gp/data_access/catalogs/PhotoObj.hdf'
-pz_sel_thresh : .68
+source_pz_file : '/global/cscratch1/sd/ihasan/DLS_catalogs/source_pz.hdf'
+phot_shape_file : '/global/cscratch1/sd/ihasan/DLS_catalogs/PhotoObj.hdf'
+pz_sel_thresh : .5
 lens:
  mag_high : 22
  mag_low : 20
- lens_out : '/global/homes/i/ihasan/shear_gp/data_access/catalogs/lens.hdf'
+ lens_out : '/global/cscratch1/sd/ihasan/DLS_catalogs/lens.hdf'
 source:
  calibrate : True
- mag_high: 24.5
+ mag_high: 26
  mag_low : 22
  b : .4
  de : .3
- source_out : '/global/homes/i/ihasan/shear_gp/data_access/catalogs/source.hdf'
+ source_out : '/global/cscratch1/sd/ihasan/DLS_catalogs/source.hdf'
