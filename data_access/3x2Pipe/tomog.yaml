@@ -8,7 +8,7 @@ lens:
  lens_out : '/global/cscratch1/sd/ihasan/DLS_catalogs/lens.hdf'
 source:
  calibrate : True
- mag_high: 26
+ mag_high: 24.5
  mag_low : 22
  b : .4
  de : .3

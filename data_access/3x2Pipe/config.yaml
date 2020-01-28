@@ -1,5 +1,5 @@
 paths:
- out_path : '/global/homes/i/ihasan/shear_gp/data_access/3x2Pipe/DLS_corrs_faint/'
+ out_path : '/global/homes/i/ihasan/shear_gp/data_access/3x2Pipe/DLS_corrs/'
  random_path : '/global/homes/i/ihasan/shear_gp/data_access/catalogs/DLS_randoms/'
  random_prefix : 'randoms'
 lens:
