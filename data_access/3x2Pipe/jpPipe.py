@@ -57,7 +57,7 @@ class Pipe:
     def wtheta(self, table, bin_number, table2=None, bin_number_2=None):
         '''calculate position position correlation'''
         #setup correlation objects, random catalog
-        corr_kwargs = {'min_sep':1.0, 'max_sep':90, 'nbins':10,
+        corr_kwargs = {'min_sep':1.0, 'max_sep':90, 'nbins':15,
                        'sep_units':'arcmin'}
         dd = treecorr.NNCorrelation(**corr_kwargs)
         rr = treecorr.NNCorrelation(**corr_kwargs)
@@ -108,7 +108,7 @@ class Pipe:
         source_corr = self.io.df_to_corr(sources, shears=True)
         rand = self.io.read_randoms(self.io.path_dict['random_prefix']+'_{}.hdf'.format(lens_bin_idx))
 
-        corr_kwargs = {'min_sep':3, 'max_sep':90, 'nbins':8, 'sep_units':'arcmin'}
+        corr_kwargs = {'min_sep':3, 'max_sep':90, 'nbins':12, 'sep_units':'arcmin'}
         #now make correlation functions
         GGL = treecorr.NGCorrelation(**corr_kwargs)
         GGL.process(lens_corr, source_corr)
@@ -121,7 +121,7 @@ class Pipe:
 
     def shearshear(self, cat1, cat2=None):
         '''calculate shear-shear correlation '''
-        ggkwargs = {'min_sep':1, 'max_sep':90, 'nbins':8, 'sep_units':'arcmin'}
+        ggkwargs = {'min_sep':1, 'max_sep':90, 'nbins':12, 'sep_units':'arcmin'}
         gg = treecorr.GGCorrelation(**ggkwargs)
         tree_cat1 = self.io.df_to_corr(cat1, shears=True)
         if cat2 is not None:
