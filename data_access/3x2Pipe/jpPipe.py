@@ -57,7 +57,7 @@ class Pipe:
     def wtheta(self, table, bin_number, table2=None, bin_number_2=None):
         '''calculate position position correlation'''
         #setup correlation objects, random catalog
-        corr_kwargs = {'min_sep':1.0, 'max_sep':90, 'nbins':15,
+        corr_kwargs = {'min_sep':3.0, 'max_sep':90, 'nbins':12,
                        'sep_units':'arcmin'}
         dd = treecorr.NNCorrelation(**corr_kwargs)
         rr = treecorr.NNCorrelation(**corr_kwargs)
@@ -121,7 +121,7 @@ class Pipe:
 
     def shearshear(self, cat1, cat2=None):
         '''calculate shear-shear correlation '''
-        ggkwargs = {'min_sep':1, 'max_sep':90, 'nbins':12, 'sep_units':'arcmin'}
+        ggkwargs = {'min_sep':3, 'max_sep':90, 'nbins':12, 'sep_units':'arcmin'}
         gg = treecorr.GGCorrelation(**ggkwargs)
         tree_cat1 = self.io.df_to_corr(cat1, shears=True)
         if cat2 is not None:
